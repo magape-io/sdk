@@ -1,5 +1,5 @@
 # 1、SDK导入 (最新）
-[https://testnet-api.magape.io/ipfs/QmXMaevcXPdJJTZyNP8wJ5AswoKdmKcHHXwxkpmYyamQWb/digital-wallet-api-starter-1.0.0-SNAPSHOT-jar-with-dependencies.jar](https://whyindian.ddns.net/ipfs/QmXMaevcXPdJJTZyNP8wJ5AswoKdmKcHHXwxkpmYyamQWb/digital-wallet-api-starter-1.0.0-SNAPSHOT-jar-with-dependencies.jar)
+[https://magape-official.github.io/sdk/java/magape_connect_1.0.0.jar]
 # 2、配置文件
 ```yaml
 basic-api:
