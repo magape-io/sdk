@@ -1,3 +1,12 @@
+# Prerequisites for Game Integration with MagApe Platform
+As a web3 platform, several essential requirements must be met before integrating your game with the MagApe platform. These prerequisites ensure the proper functioning of the games and seamless interaction with our platform.
+1. **BIP44 Standard Wallet Address:** It is imperative to possess a BIP44 standard wallet address. Ensure that this address is not a contract address and is readily accessible. This wallet serves as a gateway to all future configurations and facilitates payment reception.
+2. **Game Item Import and Export:** Prepare all game items for import and export, adhering to the specified JSON format outlined below. Prior to submission, ensure that your JSON file is validated for accuracy.
+3. **Image URLs for Game Items:** Each game item must be accompanied by an Image URL. Ensure that the images are formatted with a resolution of 100px by 100px in any image format. Additionally, confirm that hotlinking is permitted for seamless integration.
+4. **Acquisition of Secret Key (SK):** Contact our team at partnership@magape.io to obtain the Secret Key (SK) required for communication with our platform. Two Secret Keys will be provided—one for the mainnet and the other for the testnet for testing purposes.
+
+Once these prerequisites are fulfilled, you can proceed to download the SDK or utilize cURL to initiate the process of uploading your game items for approval.
+
 Export and convert game items to ERC-20 tokens. According to our standards, games can allow any item to be converted into tokens. Once the conversion process is initiated, it is irreversible, in-game items will be removed from the player, and the token minting function will be called. If a player fails to complete a cast due to low fuel, connection issues, or other issues, we will create a pending status for him so that he can recast later. A nominal processing amount will be deducted for each game item export.
 
 # 1. Game asset list Json structure
