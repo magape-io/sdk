@@ -5,28 +5,31 @@
 ## 信息
 |  | 描述 |
 | --- | --- |
-| 主网 | https://api.magape.io/uploadAsset/v1/ |
-| 测网 | https://testnet-api.magape.io/uploadAsset/v1/ |
+| 主网 | https://api.magape.io/api/game/uploadOrUpdateProp |
+| 测网 | https://testnet-api.magape.io/api/game/uploadOrUpdateProp |
 | 200 | ok 和 json|
 | 400 | 资源错误、不存在或请求错误。|
 | 500 | 服务器错误或请求失败,与游戏服务器问题相关。|
 ## 例子
 ```json
 {
-  "attributes": [
-    {
-      "traitType": "width",
-      "value": 100
-    }
-  ],
-  "maxSell": 100,
-  "maxBuy": 100,
-  "cost": 100,
-  "description": "game1's t-shirt",
-  "id": "990e16cb17714985a6848829b8508a76",
-  "image": "https://someurl.com/game/item001a",
-  "name": "t-shirt",
-  "type": "clothes"
+    "gameProps": [
+        {
+            "attributes": [
+                {
+                    "traitType": "health",
+                    "value": 100
+                }
+            ],
+            "maxSell": 10,
+            "maxBuy": 10,
+            "cost": 0.1,
+            "id": "402003351",
+            "image": "https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE",
+            "name": "test",
+            "type": "cap"
+        }
+    ]
 }
 ```
 ## 属性说明
