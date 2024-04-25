@@ -697,6 +697,55 @@ curl --location --request GET 'https://testnet-api.magape.io//api/game/uploadOrU
 --data '{"gameProps":[{"attributes":[{"traitType":"health","value":100}],"cost":0.1,"id":"402003351","image":"https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE","name":"test","type":"cap"}]}'
 ```
 
+## 4.10、uploadOrUpdateProp
+### 4.10.1、Features
+Upload or update game props
+### 4.10.2、Input parameters
+|  | Descriptions | Required |
+| --- | --- | --- |
+| token | Receiver’s token | Yes |
+| requestId | Unique traceId, cannot be repeated | Yes |
+| X-Secret-Key | The secret key applied for on the platform | Yes |
+| data | Props that need to be uploaded or modified | 
+ |
+
+### 4.10.3、Return data
+```json
+{
+  "code": 200,
+  "data":"succes",
+  "message": "success"
+}
+```
+### 4.10.4、Sample code
+```http
+curl --location 'https://testnet-api.magape.io/api/game/uploadOrUpdateProp' \
+--header 'token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIweDREMTFkRjkyMEUwRTQ4YzdFMTMyZTVhOTc1NEM3ZTc1NENkNkVCRkIiLCJkYXRlIjoxNzA3MjAwNDczNjk0fQ.PSFmagKkqBHOfefpqab4kRibozGk2uowaWwfPiUotik' \
+--header 'requestId: 123123136458' \
+--header 'X-Secret-Key: xxx' \
+--header 'Content-Type: application/json' \
+--data '{
+    "gameProps": [
+        {
+            "attributes": [
+                {
+                    "traitType": "health",
+                    "value": 100
+                }
+            ],
+            "maxSell": 10,
+            "maxBuy": 10,
+            "cost": 0.1,
+            "id": "402003351",
+            "image": "https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE",
+            "name": "test",
+            "type": "cap"
+        }
+    ]
+}'
+```
+
+
 # 5、MQ message
 ## 5.1、Introduction
 In order to promptly notify the game party of changes in user gold and NFT, MQYes
