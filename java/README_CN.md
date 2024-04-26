@@ -346,14 +346,9 @@ String requestID = UUID.randomUUID().toString();
  GamePropReq gamePropReq = new GamePropReq();
  GameProp gameProp = new GameProp();
  gameProp.setName("test");
- gameProp.setType("cap");
  gameProp.setCost(0.1);
  gameProp.setImage("https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE");
  gameProp.setId(String.valueOf(402003351));
- GameProp.Attr attr = new GameProp.Attr();
- attr.setTraitType("health");
- attr.setValue(100);
- gameProp.setAttributes(List.of(attr));
  gamePropReq.setGameProps(List.of(gameProp));
  Response<com.wd.api.model.Response<String>> execute = apiService.uploadOrUpdateProp(token, requestID,gamePropReq).execute();
  if (execute.isSuccessful()) {
@@ -689,12 +684,12 @@ curl --location --request GET 'https://testnet-api.magape.io/api/blockchain/exit
 ```
 ### 4.9.4、示例代码
 ```http
-curl --location --request GET 'https://testnet-api.magape.io//api/game/uploadOrUpdateProp' \
+curl --location --request GET 'https://testnet-api.magape.io/api/game/uploadOrUpdateProp' \
 --header 'token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIweDREMTFkRjkyMEUwRTQ4YzdFMTMyZTVhOTc1NEM3ZTc1NENkNkVCRkIiLCJkYXRlIjoxNzA3MjAwNDczNjk0fQ.PSFmagKkqBHOfefpqab4kRibozGk2uowaWwfPiUotik' \
---header 'requestId: 123123135' \
+--header 'requestId: 1714110079280' \ 
 --header 'X-Secret-Key: xxx' \
 --header 'Content-Type: application/json' \
---data '{"gameProps":[{"attributes":[{"traitType":"health","value":100}],"cost":0.1,"id":"402003351","image":"https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE","name":"test","type":"cap"}]}'
+--data '{"gameProps":[{"cost":0.1,"id":"402003351","image":"https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE","name":"test"}]}'
 ```
 
 # 5、MQ报文
