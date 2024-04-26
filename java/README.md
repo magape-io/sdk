@@ -346,13 +346,9 @@ String requestID = UUID.randomUUID().toString();
  GamePropReq gamePropReq = new GamePropReq();
  GameProp gameProp = new GameProp();
  gameProp.setName("test");
- gameProp.setType("cap");
  gameProp.setCost(0.1);
  gameProp.setImage("https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE");
  gameProp.setId(String.valueOf(402003351));
- GameProp.Attr attr = new GameProp.Attr();
- attr.setTraitType("health");
- attr.setValue(100);
  gameProp.setAttributes(List.of(attr));
  gamePropReq.setGameProps(List.of(gameProp));
  Response<com.wd.api.model.Response<String>> execute = apiService.uploadOrUpdateProp(token, requestID,gamePropReq).execute();
@@ -727,19 +723,12 @@ curl --location 'https://testnet-api.magape.io/api/game/uploadOrUpdateProp' \
 --data '{
     "gameProps": [
         {
-            "attributes": [
-                {
-                    "traitType": "health",
-                    "value": 100
-                }
-            ],
             "maxSell": 10,
             "maxBuy": 10,
             "cost": 0.1,
             "id": "402003351",
             "image": "https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE",
-            "name": "test",
-            "type": "cap"
+            "name": "test"
         }
     ]
 }'
