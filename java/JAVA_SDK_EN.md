@@ -11,11 +11,21 @@ basic-api:
 ### 3.1.1、Features
 Get all NFTs in the wallet
 ### 3.1.2、Input parameters
-|  | Descriptions | Required |
-| --- | --- | --- |
-| networkId | The chain id to be queried (MagApe testnet: 141319, BNB Testnet: 97) | Yes |
-| requestId | Unique traceId, cannot be repeated | Yes |
-| propPageReq  | Pagination query parameters, default 20 | Yes |
+|  | Descriptions| Postiton | Required |
+| --- | --- | --- | --- |
+| networkId | header| The chain id to be queried (MagApe testnet: 141319, BNB Testnet: 97) | Yes |
+| requestId | header| Unique traceId, cannot be repeated | Yes |
+| X-Secret-Key | header|Game merchants' access keys on the magape platform  | Yes |
+| propPageReq.address | body| Gamer's address| Yes |
+| propPageReq.name  | body| NFT Name| No |
+| propPageReq.level |body| NFT Level| No |
+| propPageReq.category |body|NFT Category | No |
+| propPageReq.attributes |body|NFT Attributes | No |
+| propPageReq.tokenIdAsc |body| order by tokenId asc| No |
+| propPageReq.levelAsc |body|order by level asc | No |
+| propPageReq.categoryAsc| body|order by category asc | No |
+| propPageReq.pageNo  | body| Start Page| No |
+| propPageReq.pageSize  | body| Page size| No |
 
 ### 3.1.3、Return data
 ```json
