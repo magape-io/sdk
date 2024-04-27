@@ -62,18 +62,19 @@ Get all NFTs in the wallet
 ```
 ### 3.1.4、Sample code
 ```java
-String requestID = UUID.randomUUID().toString();
-Response<com.wd.api.model.Response<WalletVO>> execute;
-try {
-    execute = apiService.walletInfo(token, 141319, requestID).execute();
-} catch (Exception e) {
-    throw new RuntimeException(e);
-}
-if (execute.isSuccessful()) {
-    System.out.println(JSON.toJSONString(execute.body()));
-} else {
-    System.out.println(execute.errorBody());
-}
+PropPageReq propPageReq = new PropPageReq();
+  try {
+      String requestID = UUID.randomUUID().toString();
+      propPageReq.setAddress("0x4D11dF920E0E48c7E132e5a9754C7e754Cd6EBFB");
+      Response<com.wd.api.model.Response<Page<PropLog>>> execute = apiService.getPopList(97, requestID, propPageReq).execute();
+      if (execute.isSuccessful()) {
+          System.out.println(JSON.toJSONString(execute.body()));
+      } else {
+          System.out.println(execute.errorBody());
+      }
+  } catch (Exception e) {
+      throw new RuntimeException(e);
+  }
 ```
 
 
@@ -96,16 +97,20 @@ Upload or update game props
 ### 3.2.4、Sample code
 ```java
 String requestID = UUID.randomUUID().toString();
- GamePropReq gamePropReq = new GamePropReq();
- GameProp gameProp = new GameProp();
- gameProp.setName("test");
- gameProp.setCost(0.1);
- gameProp.setImage("https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE");
- gameProp.setId(String.valueOf(402003351));
- Response<com.wd.api.model.Response<String>> execute = apiService.uploadOrUpdateProp(token, requestID,gamePropReq).execute();
- if (execute.isSuccessful()) {
-     System.out.println(JSON.toJSONString(execute.body()));
- } else {
-     System.out.println(execute.errorBody());
- }
+GamePropReq gamePropReq = new GamePropReq();
+GameProp gameProp = new GameProp();
+gameProp.setName("test");
+gameProp.setType("cap");
+gameProp.setCost(0.1);
+gameProp.setImage("https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE");
+gameProp.setId(String.valueOf(402003351));
+gameProp.setMaxBuy(10);
+gameProp.setMaxSell(100);
+gamePropReq.setGameProps(List.of(gameProp));
+Response<com.wd.api.model.Response<String>> execute = apiService.uploadOrUpdateProp(requestID,gamePropReq).execute();
+if (execute.isSuccessful()) {
+    System.out.println(JSON.toJSONString(execute.body()));
+} else {
+    System.out.println(execute.errorBody());
+}
 ```
