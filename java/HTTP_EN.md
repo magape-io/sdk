@@ -9,16 +9,21 @@ Get all NFTs in the wallet
 | networkId | header| The chain id to be queried (MagApe testnet: 141319, BNB Testnet: 97) | Yes |
 | requestId | header| Unique traceId, cannot be repeated | Yes |
 | X-Secret-Key | header|Game merchants' access keys on the magape platform  | Yes |
-| propPageReq.address | body| Gamer's address| Yes |
-| propPageReq.name  | body| NFT Name| No |
-| propPageReq.level |body| NFT Level| No |
-| propPageReq.category |body|NFT Category | No |
-| propPageReq.attributes |body|NFT Attributes | No |
-| propPageReq.tokenIdAsc |body| order by tokenId asc| No |
-| propPageReq.levelAsc |body|order by level asc | No |
-| propPageReq.categoryAsc| body|order by category asc | No |
-| propPageReq.pageNo  | body| Start Page| No |
-| propPageReq.pageSize  | body| Page size| No |
+| propPageReq | body| Query all NFTs of players on the magape platform, including a series of query criteria| Yes |
+
+## propPageReq
+|  | Descriptions | Required |
+| --- |  --- | --- |
+| address | Gamer's address| Yes |
+| name  | NFT Name，Support fuzzy queries| No |
+| level | NFT Level（Common、Uncommon、Rare、Epic、Legendary）| No |
+| category |NFT Category（City、Jungle、Ocean、Sky） | No |
+| attributes |NFT Attributes | No |
+| tokenIdAsc | order by tokenId asc| No |
+| levelAsc |order by level asc | No |
+| categoryAsc|order by category asc | No |
+| pageNo  | Start Page（Default First Page）| No |
+| pageSize  | Page size（Default 20 data points per page）| No |
 
 
 ## 1.3、Return data
@@ -78,13 +83,25 @@ curl --location 'https://testnet-api.magape.io/api/nft/NFTList' \
 # 2、uploadOrUpdateProp
 
 ## 2.1、Features
-Upload or update game props
+Upload or update game props，After uploading, the administrator will review the price and quantity of the props to see if they are reasonable. Only after the review is approved can MAC redemption be carried out
 
 
 ## 2.2、Input parameters
+|  | Descriptions| Postiton | Required |
+| --- | --- | --- | --- |
+| requestId | header |Unique traceId, cannot be repeated | Yes |
+| data |body|The list of all game items to be exported has no limit on the number of items that can be imported. Please refer to the following text for the format of the data. |yes|
+
+## 2.2、Data
 |  | Descriptions | Required |
 | --- | --- | --- |
-| requestId | Unique traceId, cannot be repeated | Yes |
+| id | The identification code for game items must be unique for each item to be identified. This ID will be used for all imports and exports.|yes|
+| maxSell |How many items can the entire game sell at most |yes|
+| maxBuy | How many items can I buy at most through Mac|yes|
+| cost | The number of tokens that this item may be worth. If it is a scope item, then each item is worth a token quantity. Appliances should be priced fairly in order to be accepted by our ecosystem.|yes|
+| image |The graphics of the project to be exported. Game developers should host their own images to achieve renewability. Our recommended monitor size is 300 x 300. |yes|
+| name |The name should be unique and clearly specified. If two names are found, the latter one takes effect. An example is hierarchical, where the higher the level, the more difficult it is to achieve, and the corresponding increase in export value should be made.|yes|
+| description | A description of an item, which can describe its abilities or simply tell a story about the item.|NO|
 
 
 ## 2.3、Return data
