@@ -96,12 +96,25 @@ PropPageReq propPageReq = new PropPageReq();
 ## 3.2、uploadOrUpdateProp
 ### 3.2.1、Features
 Upload or update game props
-### 3.9.2、Input parameters
+### 3.2.2、Input parameters
+|  | Descriptions| Postiton | Required |
+| --- | --- | --- | --- |
+| requestId | header |Unique traceId, cannot be repeated | Yes |
+| data |body|The list of all game items to be exported has no limit on the number of items that can be imported. Please refer to the following text for the format of the data. |yes|
+
+## 3.2.3、Data
 |  | Descriptions | Required |
 | --- | --- | --- |
-| requestId | Unique traceId, cannot be repeated | Yes |
+| id | The identification code for game items must be unique for each item to be identified. This ID will be used for all imports and exports.|yes|
+| maxSell |How many items can the entire game sell at most |yes|
+| maxBuy | How many items can I buy at most through Mac|yes|
+| cost | The number of tokens that this item may be worth. If it is a scope item, then each item is worth a token quantity. Appliances should be priced fairly in order to be accepted by our ecosystem.|yes|
+| image |The graphics of the project to be exported. Game developers should host their own images to achieve renewability. Our recommended monitor size is 300 x 300. |yes|
+| name |The name should be unique and clearly specified. If two names are found, the latter one takes effect. An example is hierarchical, where the higher the level, the more difficult it is to achieve, and the corresponding increase in export value should be made.|yes|
+| description | A description of an item, which can describe its abilities or simply tell a story about the item.|NO|
 
-### 3.2.3、Return data
+
+### 3.2.4、Return data
 ```json
 {
   "code": 200,
@@ -109,7 +122,7 @@ Upload or update game props
   "message": "success"
 }
 ```
-### 3.2.4、Sample code
+### 3.2.5、Sample code
 ```java
 String requestID = UUID.randomUUID().toString();
 GamePropReq gamePropReq = new GamePropReq();
