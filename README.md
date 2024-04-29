@@ -263,7 +263,7 @@ Once there is any decrease or increase in the imported or exported asset list, o
 | value | This attribute has 2 cases - wallet address and empty. This is explained in Action Properties. |
 | quantity | This property has 2 cases - addition and subtraction. This is explained in Action Properties. |
 
-# 3. Query NFT Json structure
+# 4. Query NFT Json structure
 This will return a list of NFTs owned by the player. Basically most of its properties follow the OpenSea standard, which will be the same properties stored in our metadata.
 ## Message
 |  | Description |
@@ -354,7 +354,7 @@ In the gamehall of magape, players can directly obtain the corresponding game's 
 | username | Player game username。|
 | timeStamp | time stamp。|
 
-# 5. Obtain the ability of Ape in the game
+# 6. Obtain the ability of Ape in the game
 We have a fixed set of attributes based on each of the 4 apes, and the game can choose the ape type and attributes to link. How the game interprets this attribute is entirely at the game's discretion, but the linked Message will be displayed on our website for players to understand. The game can only select a single ape and its adjacent properties, and will return an error if a property is not found in the ape. Each new update requires the complete list to be resubmitted, and if the list does not contain the old attributes, it is deleted from the database.
 ## Message
 |  | Description |
