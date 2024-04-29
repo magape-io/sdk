@@ -72,7 +72,7 @@ Get all NFTs in the wallet
 
 ## 1.4、Sample code
 ```
-curl --location 'https://testnet-api.magape.io/api/nft/NFTList' \ 
+curl --location 'https://testnet-api.magape.io/api/nft/nftList' \ 
 --header 'networkId: 141319' \ 
 --header 'requestId: 123123127' \ 
 --header 'X-Secret-Key: xxx' \ 
