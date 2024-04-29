@@ -16,16 +16,21 @@ Get all NFTs in the wallet
 | networkId | header| The chain id to be queried (MagApe testnet: 141319, BNB Testnet: 97) | Yes |
 | requestId | header| Unique traceId, cannot be repeated | Yes |
 | X-Secret-Key | header|Game merchants' access keys on the magape platform  | Yes |
-| propPageReq.address | body| Gamer's address| Yes |
-| propPageReq.name  | body| NFT Name| No |
-| propPageReq.level |body| NFT Level| No |
-| propPageReq.category |body|NFT Category | No |
-| propPageReq.attributes |body|NFT Attributes | No |
-| propPageReq.tokenIdAsc |body| order by tokenId asc| No |
-| propPageReq.levelAsc |body|order by level asc | No |
-| propPageReq.categoryAsc| body|order by category asc | No |
-| propPageReq.pageNo  | body| Start Page| No |
-| propPageReq.pageSize  | body| Page size| No |
+| propPageReq | body|Request body, with multiple built-in request parameters, refer to the explanation of propPageReq below | Yes |
+
+### propPageReq
+|  | Descriptions | Required |
+| --- |  --- | --- |
+| address | Gamer's address| Yes |
+| name  | NFT Name，Support fuzzy queries| No |
+| level | NFT Level（Common、Uncommon、Rare、Epic、Legendary）| No |
+| category |NFT Category（City、Jungle、Ocean、Sky） | No |
+| attributes |NFT Attributes | No |
+| tokenIdAsc | order by tokenId asc| No |
+| levelAsc |order by level asc | No |
+| categoryAsc|order by category asc | No |
+| pageNo  | Start Page（Default First Page）| No |
+| pageSize  | Page size（Default 20 data points per page）| No |
 
 ### 3.1.3、Return data
 ```json
