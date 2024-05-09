@@ -371,20 +371,8 @@ We have a fixed set of attributes based on each of the 4 apes, and the game can 
     {
       "equip":2,
       "gameAttr":"Extra Questions Limit per Day",
-      "1":20,
-      "2":50,
-      "3":120,
-      "4":250,
-      "5":500
-    },
-    {
-      "equip":5,
-      "gameAttr":"Extra Hint per Day",
-      "1":5,
-      "2":9,
-      "3":17,
-      "4":31,
-      "5":50
+      "minimum":20,
+      "maximum":50
     }
   ],
   "apeType":"Ocean",
@@ -396,12 +384,30 @@ We have a fixed set of attributes based on each of the 4 apes, and the game can 
 | --- | --- | 
 | equip | equipment, defined in the following list |
 | gameAttr | Gameplay explanation |
-| 1 | Common level value |
-| 2 | Uncommon level value |
-| 3 | Rare level value |
-| 4 | Epic Level Value |
-| 5 | Legendary level value |
+| minimum | The minimum value that this NFT attribute can affect in the game |
+| maximum | The maximum value that this NFT attribute can affect in the game |
 | apeType | Select "City", "Jungle", "Ocean", "Sky" |
+
+## minimum、maximum例子
+Currently, there are 5 levels of NFT for magape（Common、Uncommon、Rare、Epic、Legendary）
+| |value |step | | |proportion|
+|---|---|---|---|---|---|
+| Min|100 |220 | | | 100%|
+| Max|1200 | | | | |
+| Common|Uncommon |Rare | Epic|Legendary | |
+| 100|320 |540 | 760|980 | |
+| 320|540 |760 | 980|1200 | |
+
+| || |
+|---|---|---|
+|step |（max - min）/ 5（5个等级）| |
+|proportion |strengeth proportion | |
+|Common |min（100）|max（Common min + step * proportion） |
+| Uncommon|min（Common max（100%））| max（Uncommon min + step * proportion）|
+|Rare |min（Uncommon max（100%））|max（Rare min + step * proportion） |
+|Epic |min（Rare max（100%））|max（Epic min + step * proportion） |
+|Legendary |min（Epic max（100%））|max（Legendary min + step * proportion） |
+
 ## Attribute table
 | Instrument number | City | Jungle | Ocean | Sky |
 | --- | --- | --- | --- | --- | 
