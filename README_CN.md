@@ -355,20 +355,8 @@
     {
       "equip":2,
       "gameAttr":"Extra Questions Limit per Day",
-      "1":20,
-      "2":50,
-      "3":120,
-      "4":250,
-      "5":500
-    },
-    {
-      "equip":5,
-      "gameAttr":"Extra Hint per Day",
-      "1":5,
-      "2":9,
-      "3":17,
-      "4":31,
-      "5":50
+      "minimum":20,
+      "maximum":50
     }
   ],
   "apeType":"Ocean",
@@ -380,12 +368,32 @@
 | --- | --- | 
 | equip | 器具,以下列表定义 |
 | gameAttr | 游戏玩法解说 |
-| 1 | Common 等级值 |
-| 2 | Uncommon 等级值 |
-| 3 | Rare 等级值 |
-| 4 | Epic 等级值 |
-| 5 | Legendary 等级值 |
+| minimum | 这个nft属性在游戏中可以影响的最小值 |
+| maximum | 这个nft属性在游戏中可以影响的最大值 |
 | apeType | 选择 “City", “Jungle", “Ocean", “Sky" |
+
+## minimum、maximum例子
+目前magape的nft有5种级别（Common、Uncommon、Rare、Epic、Legendary）
+| |value |step | | |proportion|
+|---|---|---|---|---|---|
+| Min|100 |220 | | | 100%|
+| Max|1200 | | | | |
+| Common|Uncommon |Rare | Epic|Legendary | |
+| 100|320 |540 | 760|980 | |
+| 320|540 |760 | 980|1200 | |
+
+| || |
+|---|---|---|
+|step |（max - min）/ 5（5个等级）| |
+|proportion |增强比例| |
+|Common |min（100）|max（Common min + step * proportion） |
+| Uncommon|min（Common max（100%））| max（Uncommon min + step * proportion）|
+|Rare |min（Uncommon max（100%））|max（Rare min + step * proportion） |
+|Epic |min（Rare max（100%））|max（Epic min + step * proportion） |
+|Legendary |min（Epic max（100%））|max（Legendary min + step * proportion） |
+
+
+
 ## 属性表
 | 器具号 | City | Jungle | Ocean | Sky |
 | --- | --- | --- | --- | --- | 
