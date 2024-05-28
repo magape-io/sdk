@@ -1,409 +1,490 @@
-# MagApe平台游戏集成先决条件
-作为一个web3平台，在将您的游戏与MagApe平台集成之前，必须满足几个基本要求。这些先决条件确保游戏的正常运行，并与我们的平台无缝交互。
-1. **BIP44标准钱包地址：**拥有BIP44标准钱包地址至关重要。确保该地址不是合约地址，并且易于访问。该钱包是所有未来配置的入口，并且能够接收支付。
-2. **B游戏物品导入和导出：**按照以下指定的JSON格式准备所有游戏物品进行导入和导出。在提交之前，请确保您的JSON文件经过验证，确保准确性
-3. **B游戏物品的图片URL：**每个游戏物品必须附带一个图片URL。确保图片格式为100px x 100px的分辨率，并且允许热链接以实现无缝集成。
-4. **B获取密钥（SK）：**联系我们的团队partnership@magape.io以获取与我们平台通信所需的密钥（SK）。将提供两个密钥，一个用于主网，另一个用于测试网以进行测试。
+# 1、 游戏接入
+![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716266050349-6290d18d-4403-4491-9529-34c563d92a26.png#averageHue=%23f2f2f2&clientId=u8d8f315f-fec8-4&from=paste&height=238&id=u5a183cb5&originHeight=476&originWidth=1316&originalType=binary&ratio=2&rotation=0&showTitle=false&size=98990&status=done&style=none&taskId=u6ddfb854-519e-429e-a44b-bc0d5eb41b7&title=&width=658)
+# 2、使用SDK和magape平台进行交互
+[https://github.com/magape-official/sdk/blob/main/java/JAVA_SDK_EN.md](https://github.com/magape-official/sdk/blob/main/java/JAVA_SDK_EN.md)
 
-一旦这些先决条件得到满足，您就可以下载SDK或使用cURL启动上传游戏物品以进行批准的过程。
+# 3、游戏道具与ERC20代币转换
+## 3.1、erc20代币 -> 游戏道具
+![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716266171569-03ebb045-ebf5-4186-983c-80bc622ad695.png#averageHue=%23f6f6f6&clientId=u8d8f315f-fec8-4&from=paste&height=346&id=ua3dff10c&originHeight=692&originWidth=1640&originalType=binary&ratio=2&rotation=0&showTitle=false&size=103895&status=done&style=none&taskId=u0feb4e26-907b-4a43-8857-036e02f5972&title=&width=820)
+## 3.2、游戏道具 -> erc20代币
+![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716266351313-cbd47fdd-6ce7-446d-b76b-ff375721b847.png#averageHue=%23f6f6f6&clientId=u8d8f315f-fec8-4&from=paste&height=365&id=u74ad46cb&originHeight=730&originWidth=1776&originalType=binary&ratio=2&rotation=0&showTitle=false&size=118676&status=done&style=none&taskId=ucb75229d-6163-4006-8fa8-c383c49e62d&title=&width=888)
 
-将游戏物品导出并转换为 ERC-20 代币。根据我们的标准,游戏可以允许任何物品转换为代币。一旦转换过程启动,它是不可逆的,游戏内的物品将从玩家身上移除,并且将调用代币铸造功能。如果玩家因燃料费不足、连接问题或其他问题而未能完成铸造,我们将为他创建一个待处理状态,以便他可以在之后重新铸造。每个游戏物品导出都会扣除象征性的处理金额
+## 3.3、需要提供的接口
+### 3.3.1、游戏方
+#### 3.3.1.1、根据玩家钱包地址查询玩家支持导出的道具，支持导出的道具由游戏方决定，通过sdk上传到magape平台
+```http
+# 请求
+GET https://game.com/exportableAsset?address=xxx
+--header 'signature:xxxx'
 
-# 1. 游戏资产列表Json结构
-由于游戏物品模式的复杂性,我们动态地允许物品有广泛的分类。除了物品之外,如果游戏想要导出经验,游戏内的货币、等级或者任何有范围的物品都可以支持。游戏可以通过重新上传此文件到我们的接口来更新其资产列表。
-## 信息
-|  | 描述 |
-| --- | --- |
-| 主网 | https://api.magape.io/api/game/uploadOrUpdateProp |
-| 测网 | https://testnet-api.magape.io/api/game/uploadOrUpdateProp |
-| 200 | ok 和 json|
-| 400 | 资源错误、不存在或请求错误。|
-| 500 | 服务器错误或请求失败,与游戏服务器问题相关。|
-## 例子
-```json
+# 返回
 {
-  "maxSell": 10,
-  "maxBuy": 10,
-  "cost": 0.1,
-  "id": "402003351",
-  "image": "https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE",
-  "name": "clothes",
-  "description":"this is clothes"
-}
-```
-## 属性说明
-|  | 描述 |
-| --- | --- |
-| requestId (header) | 本次请求的的时间戳（以毫秒为单位）。这是出于版本控制的目的,其中时间戳将确定更新的游戏项目列表。|
-| data (body) | 所有要导出的游戏物品列表,可以导入的物品数量没有限制。请参阅下文了解数据的格式。|
-## data
-|  | 描述 |
-| --- | --- |
-| id | 游戏物品的识别码,对于每个要识别的物品来说,该 id 必须是唯一的。该 id 将用于所有导入和导出。 |
-| maxSell | 最多可以换多少个道具变成mac。 |
-| maxBuy | 最多用mac购买多少个道具。 |
-| cost | 该物品可能值的代币数量。如果是范围物品,则每件物品都价值代币数量。器具应该公平定价才能被我们的生态系统接受。 |
-| image | 要导出的项目的图形。游戏开发者应该托管自己的映像以实现可更新性。我们的显示器建议尺寸为 300 x 300。|
-| name | 名称应该是唯一的并且明确指定。如果找到 2 个名称,则后一个名称生效。一个例子就是等级化,等级越高越难达到,出口额就应该相应增加。 |
-| description | 对物品的描述,这个描述可以描述物品的能力或者简单地讲述一个关于这个物品的故事。 |
-
-
-# 2.玩家角色和钱包地址绑定
-游戏需要将玩家的角色和钱包地址进行绑定，方便后期magape平台通过钱包地址进行玩家资产查询、nft变更和资产变更操作
-
-
-# 3. 咨询用户游戏资产Json结构
-我们需要加载玩家的资产信息以供导出。每当我们需要更新玩家的资产列表或在交易确认期间,就会调用此API。由于我们已经有了游戏的资产列表,因此我们只需要项目 id 即可进行处理。
-## 信息
-|  | 描述 |
-| --- | --- |
-| 游戏提供 | https://game.com/api/userAsset/ |
-| 200 | ok 和 json|
-| 400 | 资源错误、不存在或请求错误。|
-| 500 | 服务器错误或请求失败,与游戏服务器问题相关。|
-
-## 请求参数
-
-||描述|
-|---|---|
-|address|玩家的钱包地址|
-
-## 例子
-```json
-{
-  "data":[
+"code":200,
+"data":[ 
     {
-      "id":554,
-      "value":1
-    },
-    {
-      "id":328,
-      "value":1
-    }
-  ]
-}
-```
-## data
-|  | 描述 |
-| --- | --- |
-| id | 游戏道具唯一id。|
-| value | 玩家在游戏中剩余可以导出的数量|
-
-# 4. 游戏资产/NFT导入/出Json结构
-一旦导入或导出资产列表有任何减少或增加,我们的服务器将向相关游戏接口（RPC）发送信息。收到消息后,游戏应检查库存是否存在并立即从玩家身上移除或增加该物品。这也适用于 NFT。请注意这部分,这是所有部分中最复杂的部分,因为此导入/导出操作具有不同的含义和功能。
-## 信息
-|  | 描述 |
-| --- | --- |
-| 游戏提供 | https://game.com/api/userAsset/ |
-| 200 | ok 和 json|
-| 400 | 资源错误、不存在或请求错误。|
-| 500 | 服务器错误或请求失败,与游戏服务器问题相关。|
-## 例子（导出游戏配备：官方回收）
-```json
-{
-  "data":[
-    {
-      "id":3,
-      "quantity":-6684
+      "id":"游戏道具id",
+      "value":10 
     }
   ],
-  "operation":"game export",
-  "timeStamp":1709267661354,
-  "networkId":141319,
-  "contract":"0x2Db213D8D90eD1af3F4DEBfFAF66b5efe28932A6",
-  "txHash":"0x4fc7b30e0a2388adcb064d6472cbf440280e7aeacea65c0cbe3925d1714b8488",
-  "from":"0x0000000000000000000000000000000000000000",
-  "to":"0x4d11df920e0e48c7e132e5a9754c7e754cd6ebfb"
+  "err":"" 
 }
 ```
-## 例子（导入游戏配备，官方售卖）
-```json
+**request**
+
+|  | 类型 | 位置 | 描述 | 是否必填 |
+| --- | --- | --- | --- | --- |
+| header | signature | header | 请求签名，游戏平台使用私钥解签 | 是 |
+| address | string | url | 游戏地址 | 是 |
+
+**response**
+
+|  | 类型 | 描述 | 是否必填 |
+| --- | --- | --- | --- |
+| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
+| err | string | 错误信息，有则不用填 | 
+| data | array | 玩家可导出的道具合集 | 是 |
+| data[0].id | string | 游戏道具id | 是 |
+| data[0].value | int | 游戏中可导出道具的数量 | 是 |
+
+#### 3.3.1.2、冻结玩家道具，用于游戏道具 -> 链数据功能
+```http
+# 请求
+POST https://game.com/freezeAsset
+--header 'signature:xxxx'
+--header 'Content-Type: application/json' \
+--data '{
+    "reqId":"xxx",
+    "address": "xxxx",
+    "id": "游戏道具id", 
+    "quantity": 10
+}'
+
+# 返回
 {
-  "data":[
-    {
-      "id":554,
-      "quantity":3
-    }
-  ],
-  "operation":"game import",
-  "timeStamp":1709267661354,
-  "networkId":141319,
-  "contract":"0x2Db213D8D90eD1af3F4DEBfFAF66b5efe28932A6",
-  "txHash":"0x4fc7b30e0a2388adcb064d6472cbf440280e7aeacea65c0cbe3925d1714b8488",
-  "from":"0x0000000000000000000000000000000000000000",
-  "to":"0x4d11df920e0e48c7e132e5a9754c7e754cd6ebfb"
+"code":200,
+"data":"success",
+"err":"" 
 }
 ```
-## 例子（游戏配备买卖、玩家之间通过market place进行买卖）
-```json
+**request**
+
+|  | 类型 | 位置 | 描述 | 是否必填 |
+| --- | --- | --- | --- | --- |
+| signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
+| Content-Type | header | header | 请求类型application/json | 是 |
+| reqId | string | body | 本次请求的唯一id | 是 |
+| address | string | body | 玩家地址 | 是 |
+| id | string | body | 游戏道具id | 是 |
+| quantity | int | body | 要冻结的数量 | 是 |
+
+**response**
+
+|  | 类型 | 描述 | 是否必填 |
+| --- | --- | --- | --- |
+| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
+| err | string | 错误信息，有则不用填 | 否 |
+| data | string | "success" &#124; "fail | 是 |
+
+#### 3.3.1.3、解冻玩家道具，用于游戏道具 -> 链数据功能
+```http
+# 请求
+POST https://game.com/unfreezeAsset
+--header 'signature:xxxx'
+--header 'Content-Type: application/json' \
+--data '{
+    "reqId":"xxx",
+    "address": "xxxx",
+    "id": "游戏道具id", 
+    "quantity": 10
+}'
+
+# 返回
 {
-  "data":[
-    {
-      "id":328,
-      "quantity":1
-    },
-    {
-      "id":328,
-      "quantity":-1,
-      "value":"0xA34357486224151dDfDB291E13194995c22Df505"
-    },
-    {
-      "id":3,
-      "quantity":467
-    },
-    {
-      "id":3,
-      "quantity":-467
-      "value":"0x40f0de13ff4454f2dc786e38504cf4efc2dd12ca"
-    }
-  ],
-  "operation":"game purchase",
-  "timeStamp":1709267661354,
-  "networkId":141319,
-  "contract":"0x2Db213D8D90eD1af3F4DEBfFAF66b5efe28932A6",
-  "txHash":"0x4fc7b30e0a2388adcb064d6472cbf440280e7aeacea65c0cbe3925d1714b8488",
-  "from":"0x0000000000000000000000000000000000000000",
-  "to":"0x4d11df920e0e48c7e132e5a9754c7e754cd6ebfb"
+"code":200,
+"data":"success",
+"err":""
 }
 ```
-## 例子（铸3个NFT）
-```json
+**request**
+
+|  | 类型 | 位置 | 描述 | 是否必填 |
+| --- | --- | --- | --- | --- |
+| signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
+| Content-Type | header | header | 请求类型application/json | 是 |
+| reqId | string | body | 本次请求的唯一id | 是 |
+| address | string | body | 玩家地址 | 是 |
+| id | string | body | 游戏道具id | 是 |
+| quantity | int | body | 要解冻的数量 | 是 |
+
+**response**
+
+|  | 类型 | 描述 | 是否必填 |
+| --- | --- | --- | --- |
+| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
+| err | string | 错误信息，有则不用填 | 否 |
+| data | string | "success" &#124; "fail | 是 |
+
+#### 3.3.1.4、删除玩家道具，用于游戏道具 -> 链数据功能
+```http
+# 请求
+POST https://game.com/deleteAsset
+--header 'signature:xxxx'
+--header 'Content-Type: application/json' \
+--data '{
+    "reqId":"xxx",
+    "address": "xxxx",
+    "id": "游戏道具id", 
+    "quantity": 10
+}'
+
+# 返回
 {
-  "operation":"nft mint",
-  "timeStamp":1709267661354,
-  "networkId":141319,
-  "contract":"0x93EbAFF33eC2Fcc82087DE058ec07a433e6982AD",
-  "txHash":"0x4fc7b30e0a2388adcb064d6472cbf440280e7aeacea65c0cbe3925d1714b8488",
-  "from":"0x0000000000000000000000000000000000000000",
-  "to":"0x4d11df920e0e48c7e132e5a9754c7e754cd6ebfb"
+"code":200,
+"data":"success",
+"err":"" 
 }
 ```
-## 例子（转移NFT）
-```json
+**request**
+
+|  | 类型 | 位置 | 描述 | 是否必填 |
+| --- | --- | --- | --- | --- |
+| signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
+| Content-Type | header | header | 请求类型application/json | 是 |
+| reqId | string | body | 本次请求的唯一id | 是 |
+| address | string | body | 玩家地址 | 是 |
+| id | string | body | 游戏道具id | 是 |
+| quantity | int | body | 要删除的数量 | 是 |
+
+**response**
+
+|  | 类型 | 描述 | 是否必填 |
+| --- | --- | --- | --- |
+| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
+| err | string | 错误信息，有则不用填 | 否 |
+| data | string | "success" &#124; "fail | 是 |
+
+#### 
+
+#### 3.3.1.5、检查是否还有库存支持导入，用于链数据 -> 游戏道具功能
+```http
+# 请求
+POST https://game.com/checkStorge
+--header 'signature:xxxx' 
+--header 'Content-Type: application/json' \
+--data '{
+    "reqId":"xxx",
+    "address": "xxxx",
+    "id": "游戏道具id", 
+    "quantity": 10
+}'
+
+# 返回
 {
-  "operation":"nft transfer",
-  "timeStamp":1709267661354,
-  "networkId":141319,
-  "contract":"0x93EbAFF33eC2Fcc82087DE058ec07a433e6982AD",
-  "txHash":"0x4fc7b30e0a2388adcb064d6472cbf440280e7aeacea65c0cbe3925d1714b8488",
-  "from":"0xA34357486224151dDfDB291E13194995c22Df505",
-  "to":"0x4d11df920e0e48c7e132e5a9754c7e754cd6ebfb"
+"code":200,
+"data":"success",
+"err":""
 }
 ```
-## 例子（从不同的2个持有者购买NFT）
-```json
+
+**request**
+
+|  | 类型 | 位置 | 描述 | 是否必填 |
+| --- | --- | --- | --- | --- |
+| signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
+| Content-Type | header | header | 请求类型application/json | 是 |
+| reqId | string | body | 本次请求的唯一id | 是 |
+| address | string | body | 玩家地址 | 是 |
+| id | string | body | 游戏道具id | 是 |
+| quantity | int | body | 购买数量 | 是 |
+
+**response**
+
+|  | 类型 | 描述 | 是否必填 |
+| --- | --- | --- | --- |
+| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
+| err | string | 错误信息，有则不用填 | 否 |
+| data | string | "success" &#124; "fail | 是 |
+
+#### 
+
+#### 3.3.1.6、新增玩家道具，用于链数据 -> 游戏道具功能
+```http
+# 请求
+POST https://game.com/increaseAsset
+--header 'signature:xxxx'
+--header 'Content-Type: application/json' \
+--data '{
+    "reqId":"xxx", 
+    "address": "xxxx",
+    "id": "游戏道具id", 
+    "quantity": 10
+}'
+
+# 返回
 {
-  "operation":"nft purchase",
-  "timeStamp":1709267661354,
-  "networkId":141319,
-  "contract":"0x93EbAFF33eC2Fcc82087DE058ec07a433e6982AD",
-  "txHash":"0x4fc7b30e0a2388adcb064d6472cbf440280e7aeacea65c0cbe3925d1714b8488",
-  "from":["0xA34357486224151dDfDB291E13194995c22Df505"],
-  "to":"0x4d11df920e0e48c7e132e5a9754c7e754cd6ebfb"
+"code":200,
+"data":"success" ,
+"err":""
 }
 ```
-## 例子（NFT合并）
-```json
+**request**
+
+|  | 类型 | 位置 | 描述 | 是否必填 |
+| --- | --- | --- | --- | --- |
+| signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
+| Content-Type | header | header | 请求类型application/json | 是 |
+| reqId | string | body | 本次请求的唯一id | 是 |
+| address | string | body | 玩家地址 | 是 |
+| id | string | body | 游戏道具id | 是 |
+| quantity | int | body | 新增资产数量 | 是 |
+
+**response**
+
+|  | 类型 | 描述 | 是否必填 |
+| --- | --- | --- | --- |
+| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
+| err | string | 错误信息，有则不用填 | 否 |
+| data | string | "success" &#124; "fail | 是 |
+
+#### 
+
+### 3.3.2、magape平台
+#### 3.3.2.1、上传游戏可导出道具元数据
+#### [https://github.com/magape-official/sdk/blob/main/java/HTTP_EN.md](https://github.com/magape-official/sdk/blob/main/java/HTTP_EN.md)（参考uploadOrUpdateProp方法）
+# 4、NFT变动
+![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716267432821-94d111b0-646b-4948-b343-f9e7bfb2f33b.png#averageHue=%23f5f5f5&clientId=uc39d0872-6693-4&from=paste&height=220&id=ue647a564&originHeight=440&originWidth=1348&originalType=binary&ratio=2&rotation=0&showTitle=false&size=70861&status=done&style=none&taskId=u948b271b-0b59-494b-bad7-b048092f544&title=&width=674)
+
+## 4.1、需要提供的接口
+### 4.1.1、游戏方
+#### 4.1.1.1、接受magape nft变更的回调函数。用户在nft变更(mint、transfer...)会通知游戏方。游戏方调用magape接口拉取最新的nft列表
+```http
+# 请求
+GET https://game.com/nftNotify?address=xxx
+--header 'signature:xxxx' 
+
+# 返回
 {
-  "operation":"nft merge",
-  "timeStamp":1709267661354,
-  "networkId":141319,
-  "contract":"0x93EbAFF33eC2Fcc82087DE058ec07a433e6982AD",
-  "txHash":"0x4fc7b30e0a2388adcb064d6472cbf440280e7aeacea65c0cbe3925d1714b8488",
-  "from":"0x0000000000000000000000000000000000000000",
-  "to":"0x4d11df920e0e48c7e132e5a9754c7e754cd6ebfb"
+"code":200,
+"data":"success",
+"err":""
 }
 ```
-## 例子（NFT升级/重滚 - 刷新元数据）
-```json
+**request**
+
+|  | 类型 | 位置 | 描述 | 是否必填 |
+| --- | --- | --- | --- | --- |
+| signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
+| address | string | url | 玩家地址 | 是 |
+
+**response**
+
+|  | 类型 | 描述 | 是否必填 |
+| --- | --- | --- | --- |
+| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
+| err | string | 错误信息，有则不用填 | 否 |
+| data | string | "success" &#124; "fail | 是 |
+
+#### 
+
+### 4.1.2、magape
+#### 4.1.2.1、根据玩家地址查询所有nft列表，sdk中getPopList函数，返回的NFT属性为A(1-10)、B(1-10)、C(1-10)、D(1-10),属性在5、NFT在游戏中的影响中有详细描述
+```java
 {
-  "operation":"nft refresh",
-  "timeStamp":1709267661354,
-  "networkId":141319,
-  "contract":"0x93EbAFF33eC2Fcc82087DE058ec07a433e6982AD",
-  "txHash":"0x4fc7b30e0a2388adcb064d6472cbf440280e7aeacea65c0cbe3925d1714b8488",
-  "from":"0x0000000000000000000000000000000000000000",
-  "to":"0x4d11df920e0e48c7e132e5a9754c7e754cd6ebfb"
+  "code": 200,
+  "data": {
+    "data": [
+      {
+        "attrList": [
+          {
+            "displayType": "boost_percentage", // 不需要处理，属于nft market市场展示
+            "traitType": "D2", // 属性名
+            "value": 60 // 属性值，百分比
+          },
+          {
+            "displayType": "boost_percentage",
+            "traitType": "D1",
+            "value": 20
+          },
+          {
+            "displayType": "boost_percentage",
+            "traitType": "D9",
+            "value": 30
+          },
+          {
+            "displayType": "boost_percentage",
+            "traitType": "D5",
+            "value": 40
+          },
+          {
+            "traitType": "Rank",
+            "value": "Epic"
+          },
+          {
+            "traitType": "Ape Type",
+            "value": "Sky"
+          }
+        ],
+        "attrs": "[{\"display_type\":\"boost_percentage\",\"trait_type\":\"D2\",\"value\":60},{\"display_type\":\"boost_percentage\",\"trait_type\":\"D1\",\"value\":20},{\"display_type\":\"boost_percentage\",\"trait_type\":\"D9\",\"value\":30},{\"display_type\":\"boost_percentage\",\"trait_type\":\"D5\",\"value\":40},{\"trait_type\":\"Rank\",\"value\":\"Epic\"},{\"trait_type\":\"Ape Type\",\"value\":\"Sky\"}]",
+        "category": "Sky",
+        "createTime": 1714109254000,
+        "erc721ContractAddress": "0x3FB236F17054c24DB20FDf6135Ce334DE7451928",
+        "fromAddress": "0x0000000000000000000000000000000000000000",
+        "imageUrl": "https://testnet-api.magape.io/ipfs/QmeSRVY7786EZTEQivowaPakjjSPg3BRyMdWk8dHWroDFL",
+        "imgCid": "ipfs://QmeSRVY7786EZTEQivowaPakjjSPg3BRyMdWk8dHWroDFL",
+        "level": "Epic",
+        "name": "Mappy #306",
+        "nftCidUrl": "https://testnet-api.magape.io/ipns/null",
+        "status": 2,
+        "toAddress": "0x4d11df920e0e48c7e132e5a9754c7e754cd6ebfb",
+        "tokenId": 306
+      }
+    ],
+    "hasNext": true,
+    "pageNo": 1,
+    "pageSize": 20,
+    "totalPage": 2,
+    "totalRecord": 38
+  },
+  "message": "success"
 }
 ```
-## 属性说明
-|  | 描述 |
-| --- | --- |
-| operation | "game export" - id 是正在导出的游戏资产 id,quantity 是将从游戏中扣除的数量。|
-| operation | "game import" - id 是正在导入的游戏资产 id,quantity 是将从游戏中增加的数量。|
-| operation | “game purchase" - 游戏中正在轮换的物品,to 将收到正数量的物品,而所有负数量的物品将反映到 value 中的地址。|
-| operation | "nft mint" - id 是新铸造的 NFT 属于 to 地址。|
-| operation | "nft transfer" - 这是直接转账,没有任何平台或代币参与,NFT id 会被扣除并添加到 to 中。|
-| operation | "nft purchase" - 这是从市场上购买的,卖家可能是不同的人,NFT 都转移到 to 地址并从 value 字段中扣除。|
-| operation | "nft barter" - to 地址是此易货交易的发起者,而 value 字段是 id 中指定的 NFT id 的新所有者。|
-| operation | "nft merge" - 合并的始终是同一个人的NFT,并且根据id相应地添加或删除数量。|
-| operation | "nft refresh" - 这不需要更新数量,而只需调用刷新元数据,因为其中的属性已更改。|
-| networkId | 处理该交易的区块链网络。|
-| txHash | 从区块链生成的交易哈希。|
-| from | 如果创建了东西,它将是 0x0,否则它将是发件人的地址。|
-| to | 除非操作指定,否则通常是收件人地址。|
-| timeStamp | 生成此文件的时间戳（以毫秒为单位）。这是出于版本控制的目的,其中时间戳将确定更新的游戏项目列表。|
-| data | 所有要导出的游戏物品列表,可以导入的物品数量没有限制。请参阅下文了解数据的格式。|
-## data
-|  | 描述 |
-| --- | --- |
-| id | 游戏配备编号。|
-| value | 该属性有 2 种情况 - 钱包地址和空。这已在操作属性中进行了解释。|
-| quantity | 该属性有 2 种情况 - 加法和减法。这已在操作属性中进行了解释。|
+## 4.2、安全问题
+4.2.1、游戏厂商在生成sk的时候，magape平台会同步生成一个公钥，在magape给游戏厂商发送数据时会对数据进行加密，游戏方拿到数据之后可以通过sk进行解密。避免接口暴露导致恶意攻击
+```java
+String pk = "在magape平台生成";
+String sk = "在magape平台生成";
 
-# 5. 查询NFT Json结构
-这将返回玩家拥有的 NFT 列表。基本上它的大部分属性都遵循 OpenSea 标准,这将与我们元数据中存储的属性相同。
-## 信息
-|  | 描述 |
-| --- | --- |
-| 主网 | https://api.magape.io/api/nft/nftList |
-| 测网 | https://testnet-api.magape.io/api/nft/nftList |
-| 200 | ok 和 json|
-| 400 | 资源错误、不存在或请求错误。|
-| 500 | 服务器错误或请求失败,与游戏服务器问题相关。|
-## 例子
-```json
+
+Sign signTwo = SecureUtil.sign(SignAlgorithm.MD5withRSA);
+// 设置验签的公钥
+signTwo.setPublicKey(pk);
+// 还原签名为byte数组
+byte[] signDataOrigin = Base64.getDecoder().decode(signDataStr);
+boolean verify = signTwo.verify(data.getBytes(StandardCharsets.UTF_8), signDataOrigin);
+System.out.println("签名验证结果 = " + verify);
+
+// 使用私钥解密数据
+RSA rsaForDataDecrypt = new RSA(sk, null);
+byte[] decryptData = Base64.getDecoder().decode(encryptDataStr);
+byte[] decrypt = rsaForDataDecrypt.decrypt(decryptData, KeyType.PrivateKey);
+String dataOriginal = new String(decrypt, StandardCharsets.UTF_8);
+System.out.println("解密数据 = " + dataOriginal);
+```
+# 5、NFT在游戏中的影响
+在magape页面设置游戏支持的nft类型，目前分为4类"City", "Jungle", “Ocean", "Sky",每一种类型下面有不同的属性。
+游戏厂商可以选择任意一种类型的nft进行游戏人物增强，每一个nft的属性只会属于其中一种类型，比如NFT不会同时拥有City下面的属性和Jungle下面的属性
+![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716774123682-0695f2f2-bfdb-4962-8bc6-97bafeb3af66.png#averageHue=%23eeeff0&clientId=uca42cdc8-16fd-4&from=paste&height=472&id=u0db8d80c&originHeight=944&originWidth=1454&originalType=binary&ratio=2&rotation=0&showTitle=false&size=198141&status=done&style=none&taskId=uad80840f-faa8-4103-8927-32f94b9a789&title=&width=727)
+游戏方可以自行设定游戏功能使用哪一种属性（例如：攻击力 -> City的A1），并设置在游戏中影响的最大值和最小值
+
+nft等级决定了具体影响数值。目前magape的nft有5个等级（Common、Uncommon、Rare、Epic、Legendary）
+![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716269294463-0137c412-1537-426f-904b-c2bb37c0fbca.png#averageHue=%23f3f4f5&clientId=uc39d0872-6693-4&from=paste&height=532&id=u48a3162b&originHeight=1064&originWidth=1500&originalType=binary&ratio=2&rotation=0&showTitle=false&size=160330&status=done&style=none&taskId=u30b8823f-5261-4e7c-b89e-d850c6dac99&title=&width=750)
+magape平台可以提供接口计算这些NFT最终加成，游戏平台也可以获取所有的NFT自行计算这些属性加成
+## 5.1、需要提供的接口
+### 5.1.1、游戏方
+5.1.1.1、获取游戏支持的属性，方便玩家可以准确的知道自己拥有的nft能对游戏的加成
+```http
+# 请求
+GET https://game.com/attrDefinition
+--header 'signature:xxxx' 
+
+# 返回
 {
-  "data":[
-    {
-      "id":3,
-      "name": "Mappy #3",
-      "attributes": [
-        {
-          "trait_type": "Rank", 
-          "value": "Common"
-        },
-        {
-          "trait_type": "Type", 
-          "value": "City"
-        },
-        {
-          "display_type": "boost_percentage",
-          "trait_type": "Horn",
-          "value": 20
-        }
-      ]
-    }
-  ],
-  "timeStamp":1709267661354,
-  "networkId":141319,
-  "contract":"0x93EbAFF33eC2Fcc82087DE058ec07a433e6982AD"
-}
+  "code":200
+  "data": {
+    "category": "City",
+    "attrs": [
+      {
+        "attr":"A1",
+        "min":10,
+        "max":100,
+        "description":"Power Enhancement"
+      }
+    ]
+  },
+  "err":"" 
+  }
 ```
-## 属性说明
-|  | 描述 |
-| --- | --- | 
-| id | nft 编号。|
-| name | nft 名称。|
-| attributes | nft属性。|
-| timeStamp | magape收到nft的最后时间|
-| networkId | chainId （BNB mainnet 56）|
-| contract | nft所属合约地址|
-## attributes
-|  | 描述 |
-| --- | --- | 
-| trait_type | 属性名称|
-| value | 属性值|
 
-# 6. magape平台根据钱包地址查询游戏用户基本信息
-在magape的gamehall中，玩家可以直接通过钱包地址获取对应游戏的用户角色名称
-## 信息
-|  | 描述 |
-| --- | --- |
-| 主网 | https://game.com/api/userInfo |
-| 200 | ok 和 json|
-| 400 | 资源错误、不存在或请求错误。|
-| 401 | 认证失败 |
-| 500 | 服务器错误或请求失败,与游戏服务器问题相关。|
 
-## 请求参数
+**request**
 
-||描述|
-|---|---|
-|address|玩家的钱包地址|
+|  | 类型 | 位置 | 描述 | 是否必填 |
+| --- | --- | --- | --- | --- |
+| signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
 
-## 例子
-```json
+**response**
+
+|  | 类型 | 描述 | 是否必填 |
+| --- | --- | --- | --- |
+| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
+| err | string | 错误信息，有则不用填 | 否 |
+| category | string | 游戏支持的nft类型（City, Jungle, Ocean, Sky） | 是 |
+| attrs | array | 游戏支持的属性 | 是 |
+| attrs[0].attr | string | 属性名称 | 是 |
+| attrs[0].min | int | 属性最小值，百分比 | 是 |
+| attrs[0].max | int | 属性最大值，百分比 | 是 |
+| attrs[0].description | string | 属性描述 | 是 |
+
+
+### 5.1.2、magape
+5.1.1.2.1、游戏获取用户所有nft总的加成，算法参考上述表格
+```http
+# 请求
+GET https://testnet-api.magape.io/buff?address=xxxx
+--header 'X-Secret-Key:xxxx'
+
+# 返回
 {
-  "address":"0xA34357486224151dDfDB291E13194995c22Df505",
-  "username":"Capta1nJ@ck",
-  "timeStamp":1709267661354
-}
+  "code":200,
+  "data": {
+    "address":"xxxx",
+    "buff":[
+      {
+        "attr":"A1",
+        "val":90,
+      },
+      {
+        "attr":"A2",
+        "val":80,
+      }
+    ]
+  },
+  "err":"" 
+  }
 ```
+**request**
 
-## 属性说明
-|  | 描述 |
-| --- | --- | 
-| address | 钱包地址。|
-| username | 玩家游戏用户名。|
-| timeStamp | 时间戳。|
+|  | 类型 | 位置 | 描述 | 是否必填 |
+| --- | --- | --- | --- | --- |
+| X-Secret-Key | string | header | magape的获取到的私钥 | 是 |
+| address | string | url | 玩家地址 | 是 |
 
-# 7. 获取游戏中ape的能力
-我们根据 4 种猿中的每一种都有固定的属性集,游戏可以选择猿类型和要链接的属性。游戏如何解释该属性完全由游戏自行决定,但链接信息将显示在我们的网站上供玩家了解。游戏只能选择单个猿类及其相邻属性,如果在猿类中找不到某个属性,则会返回错误。每次新的更新都需要重新提交完整列表,如果列表不包含旧属性,则会从数据库中删除。
-## 信息
-|  | 描述 |
-| --- | --- |
-| 主网 | https://game.com/api/apeAbility |
-| 测网 | https://game.com/apeAbility |
-| 200 | ok 和 json|
-| 400 | 资源错误、不存在或请求错误。|
-| 500 | 服务器错误或请求失败,与游戏服务器问题相关。|
-## 例子
-```json
-{
-  "data":[
-    {
-      "equip":2,
-      "gameAttr":"Extra Questions Limit per Day",
-      "minimum":20,
-      "maximum":50
-    }
-  ],
-  "apeType":"Ocean",
-  "timeStamp":1709267661354
-}
-```
-## 属性说明
-|  | 描述 |
-| --- | --- | 
-| equip | 器具,以下列表定义 |
-| gameAttr | 游戏玩法解说 |
-| minimum | 这个nft属性在游戏中可以影响的最小值 |
-| maximum | 这个nft属性在游戏中可以影响的最大值 |
-| apeType | 选择 “City", “Jungle", “Ocean", “Sky" |
+**response**
 
-## minimum、maximum例子
-目前magape的nft有5种级别（Common、Uncommon、Rare、Epic、Legendary）
-| |value |step | | |proportion|
-|---|---|---|---|---|---|
-| Min|100 |220 | | | 100%|
-| Max|1200 | | | | |
-| Common|Uncommon |Rare | Epic|Legendary | |
-| 100|320 |540 | 760|980 | |
-| 320|540 |760 | 980|1200 | |
-
-| || |
-|---|---|---|
-|step |（max - min）/ 5（5个等级）| |
-|proportion |增强比例| |
-|Common |min（100）|max（Common min + step * proportion） |
-| Uncommon|min（Common max（100%））| max（Uncommon min + step * proportion）|
-|Rare |min（Uncommon max（100%））|max（Rare min + step * proportion） |
-|Epic |min（Rare max（100%））|max（Epic min + step * proportion） |
-|Legendary |min（Epic max（100%））|max（Legendary min + step * proportion） |
+|  | 类型 | 描述 | 是否必填 |
+| --- | --- | --- | --- |
+| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
+| err | string | 错误信息，有则不用填 | 否 |
+| address | string | 玩家地址 | 是 |
+| buff | array | 增益 | 是 |
+| buff.attr | string | 属性名称 | 是 |
+| buff.val | int | 属性加成 | 是 |
 
 
+# 6、登入游戏
+## 6.1、web游戏通过magape登入
+玩家先登入magape平台进行签名，在进入游戏的时候带上magape平台生成的token信息。游戏厂商可以直接使用token操作sdk方法，也可以直接传入玩家地址，区别是token可以让玩家退出游戏，address不存在退出
+## 6.2、通过游戏自身的账户体系登入
+游戏需要提供入口让玩家和钱包地址进行绑定，绑定之后在调用magape平台接口时会自动在magape平台中保存玩家和游戏的关联关系
+![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716523939764-5bca1861-9721-49e3-a7cc-32e6425f78ba.png#averageHue=%23fafafa&clientId=u19a5e47a-eb1b-4&from=paste&height=542&id=u96838970&originHeight=1084&originWidth=1330&originalType=binary&ratio=2&rotation=0&showTitle=false&size=83358&status=done&style=none&taskId=ue54c796d-353f-4998-877e-27f4924a38d&title=&width=665)
 
-## 属性表
-| 器具号 | City | Jungle | Ocean | Sky |
-| --- | --- | --- | --- | --- | 
-| 1 | Handgun | Spear | Trident | Lightning rod |
-| 2 | Briefcase | Rucksack | Ziplock bag | Jetpack |
-| 3 | Electric car | Lianas | Surfboard | Airship |
-| 4 | Condo |  Treehouse | Boathouse | Aetheropolis |
-| 5 | Mobile phone | Horn | Blue whale | Satellite |
-| 6 | Laptop | Firepit | Fishing net | Bird trap |
-| 7 | Water bottle | Morning dew | Oxygen tank | Space suit |
-| 8 | Headphone | Wood spirit | Swan lake | Telescope |
-| 9 | Sunglasses | Tribal mask | Goggles | Flying helmet |
-| 10 | Banana split | MangoSea | coconut | Starfruit |
+# 7、悬浮图标功能
+## 7.1、登入注册
+### 7.1.1、登入
+通过本地钱包执行登入验证签名，或者输入设置好的密码执行登入，调用签名访问进行认证授权。返回认证结果和用户钱包地址
+### 7.1.2、注册
+通过开源钱包或者magape随机生成一个钱包公私钥，并让用户设定好密码。返回认证结果和用户钱包地址
+## 7.2、退出
+## 7.3、资产查询
+可以查询用户所有的nft，以及代币余额
+
