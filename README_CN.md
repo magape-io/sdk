@@ -14,8 +14,13 @@
 #### 3.3.1.1、根据玩家钱包地址查询玩家支持导出的道具，支持导出的道具由游戏方决定，通过sdk上传到magape平台
 ```http
 # 请求
-GET https://game.com/exportableAsset?address=xxx
---header 'signature:xxxx'
+POST https://game.com/exportableAsset?address=xxx
+--header 'Content-Type: application/json' \
+--header 'signature:xxxx' 
+--data '{
+"reqId":'xxxx',
+"address':'xxxx'
+}'
 
 # 返回
 {
@@ -34,7 +39,9 @@ GET https://game.com/exportableAsset?address=xxx
 |  | 类型 | 位置 | 描述 | 是否必填 |
 | --- | --- | --- | --- | --- |
 | header | signature | header | 请求签名，游戏平台使用私钥解签 | 是 |
-| address | string | url | 游戏地址 | 是 |
+| Content-Type | string | header | 请求类型application/json | 是 |
+| reqId | string | body | 本次请求的唯一id | 是 |
+| address | string | body | 游戏地址 | 是 |
 
 **response**
 
@@ -42,6 +49,7 @@ GET https://game.com/exportableAsset?address=xxx
 | --- | --- | --- | --- |
 | code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
 | err | string | 错误信息，有则不用填 | 
+ |
 | data | array | 玩家可导出的道具合集 | 是 |
 | data[0].id | string | 游戏道具id | 是 |
 | data[0].value | int | 游戏中可导出道具的数量 | 是 |
@@ -54,15 +62,15 @@ POST https://game.com/freezeAsset
 --header 'Content-Type: application/json' \
 --data '{
     "reqId":"xxx",
-    "address": "xxxx",
+    "address": xxxx,
     "id": "游戏道具id", 
     "quantity": 10
 }'
 
 # 返回
 {
-"code":200,
-"data":"success",
+"code":200｜400｜401｜500 // 返回状态码
+"data":"success" | "fail",
 "err":"" 
 }
 ```
@@ -71,7 +79,7 @@ POST https://game.com/freezeAsset
 |  | 类型 | 位置 | 描述 | 是否必填 |
 | --- | --- | --- | --- | --- |
 | signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
-| Content-Type | header | header | 请求类型application/json | 是 |
+| Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
 | address | string | body | 玩家地址 | 是 |
 | id | string | body | 游戏道具id | 是 |
@@ -93,7 +101,7 @@ POST https://game.com/unfreezeAsset
 --header 'Content-Type: application/json' \
 --data '{
     "reqId":"xxx",
-    "address": "xxxx",
+    "address": xxxx,
     "id": "游戏道具id", 
     "quantity": 10
 }'
@@ -101,7 +109,7 @@ POST https://game.com/unfreezeAsset
 # 返回
 {
 "code":200,
-"data":"success",
+"data":"success" | "fail",
 "err":""
 }
 ```
@@ -110,7 +118,7 @@ POST https://game.com/unfreezeAsset
 |  | 类型 | 位置 | 描述 | 是否必填 |
 | --- | --- | --- | --- | --- |
 | signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
-| Content-Type | header | header | 请求类型application/json | 是 |
+| Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
 | address | string | body | 玩家地址 | 是 |
 | id | string | body | 游戏道具id | 是 |
@@ -132,15 +140,15 @@ POST https://game.com/deleteAsset
 --header 'Content-Type: application/json' \
 --data '{
     "reqId":"xxx",
-    "address": "xxxx",
+    "address": xxxx,
     "id": "游戏道具id", 
     "quantity": 10
 }'
 
 # 返回
 {
-"code":200,
-"data":"success",
+"code":200｜400｜401｜500 // 返回状态码
+"data":"success" | "fail",
 "err":"" 
 }
 ```
@@ -149,7 +157,7 @@ POST https://game.com/deleteAsset
 |  | 类型 | 位置 | 描述 | 是否必填 |
 | --- | --- | --- | --- | --- |
 | signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
-| Content-Type | header | header | 请求类型application/json | 是 |
+| Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
 | address | string | body | 玩家地址 | 是 |
 | id | string | body | 游戏道具id | 是 |
@@ -173,7 +181,7 @@ POST https://game.com/checkStorge
 --header 'Content-Type: application/json' \
 --data '{
     "reqId":"xxx",
-    "address": "xxxx",
+    "address": xxxx,
     "id": "游戏道具id", 
     "quantity": 10
 }'
@@ -191,7 +199,7 @@ POST https://game.com/checkStorge
 |  | 类型 | 位置 | 描述 | 是否必填 |
 | --- | --- | --- | --- | --- |
 | signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
-| Content-Type | header | header | 请求类型application/json | 是 |
+| Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
 | address | string | body | 玩家地址 | 是 |
 | id | string | body | 游戏道具id | 是 |
@@ -215,7 +223,7 @@ POST https://game.com/increaseAsset
 --header 'Content-Type: application/json' \
 --data '{
     "reqId":"xxx", 
-    "address": "xxxx",
+    "address": xxxx,
     "id": "游戏道具id", 
     "quantity": 10
 }'
@@ -232,7 +240,7 @@ POST https://game.com/increaseAsset
 |  | 类型 | 位置 | 描述 | 是否必填 |
 | --- | --- | --- | --- | --- |
 | signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
-| Content-Type | header | header | 请求类型application/json | 是 |
+| Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
 | address | string | body | 玩家地址 | 是 |
 | id | string | body | 游戏道具id | 是 |
@@ -259,9 +267,13 @@ POST https://game.com/increaseAsset
 #### 4.1.1.1、接受magape nft变更的回调函数。用户在nft变更(mint、transfer...)会通知游戏方。游戏方调用magape接口拉取最新的nft列表
 ```http
 # 请求
-GET https://game.com/nftNotify?address=xxx
+POST https://game.com/nftNotify
+--header 'Content-Type: application/json' \
 --header 'signature:xxxx' 
-
+--data '{
+"reqId":'xxxx',
+"address':'xxxx'
+}'
 # 返回
 {
 "code":200,
@@ -274,7 +286,11 @@ GET https://game.com/nftNotify?address=xxx
 |  | 类型 | 位置 | 描述 | 是否必填 |
 | --- | --- | --- | --- | --- |
 | signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
-| address | string | url | 玩家地址 | 是 |
+| Content-Type | string | header | 请求类型 | 
+ |
+| reqId | string | body | 本次请求唯一id | 
+ |
+| address | string | body | 玩家地址 | 是 |
 
 **response**
 
@@ -351,24 +367,38 @@ GET https://game.com/nftNotify?address=xxx
 ## 4.2、安全问题
 4.2.1、游戏厂商在生成sk的时候，magape平台会同步生成一个公钥，在magape给游戏厂商发送数据时会对数据进行加密，游戏方拿到数据之后可以通过sk进行解密。避免接口暴露导致恶意攻击
 ```java
-String pk = "在magape平台生成";
-String sk = "在magape平台生成";
+InputStream inputStream = request.getInputStream();
+ByteArrayOutputStream output = new ByteArrayOutputStream();
+byte[] buffer = new byte[1024];
+int n;
+while (-1 != (n = inputStream.read(buffer))) {
+            output.write(buffer, 0, n);
+}
+String payload = output.toString(StandardCharsets.UTF_8);
+String sigHeader = request.getHeader("signature");
 
+String address = request.getParameter("address");
 
-Sign signTwo = SecureUtil.sign(SignAlgorithm.MD5withRSA);
-// 设置验签的公钥
-signTwo.setPublicKey(pk);
-// 还原签名为byte数组
-byte[] signDataOrigin = Base64.getDecoder().decode(signDataStr);
-boolean verify = signTwo.verify(data.getBytes(StandardCharsets.UTF_8), signDataOrigin);
-System.out.println("签名验证结果 = " + verify);
+String privateKeyStr = "magape平台私钥";
+String publicKeyStr = "magape平台公钥";
 
-// 使用私钥解密数据
-RSA rsaForDataDecrypt = new RSA(sk, null);
-byte[] decryptData = Base64.getDecoder().decode(encryptDataStr);
-byte[] decrypt = rsaForDataDecrypt.decrypt(decryptData, KeyType.PrivateKey);
-String dataOriginal = new String(decrypt, StandardCharsets.UTF_8);
-System.out.println("解密数据 = " + dataOriginal);
+byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyStr);
+PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
+KeyFactory keyFactory = KeyFactory.getInstance("EC");
+PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
+
+ // 从Base64字符串恢复公钥
+ byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyStr);
+ X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
+ PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
+
+Sign sign = SecureUtil.sign(SignAlgorithm.SHA256withECDSA);
+sign.setPrivateKey(privateKey);
+
+// 验签
+sign.setPublicKey(publicKey);
+boolean verify = sign.verify(payload.getBytes(), Base64.getDecoder().decode(sigHeader));
+System.out.println("Verify Result: " + verify);
 ```
 # 5、NFT在游戏中的影响
 在magape页面设置游戏支持的nft类型，目前分为4类"City", "Jungle", “Ocean", "Sky",每一种类型下面有不同的属性。
@@ -384,8 +414,12 @@ magape平台可以提供接口计算这些NFT最终加成，游戏平台也可�
 5.1.1.1、获取游戏支持的属性，方便玩家可以准确的知道自己拥有的nft能对游戏的加成
 ```http
 # 请求
-GET https://game.com/attrDefinition
---header 'signature:xxxx' 
+POST https://game.com/attrDefinition
+--header 'Content-Type: application/json' \
+--header 'signature:xxxx' \
+--data '{
+"reqId":"xxxxx"
+}'
 
 # 返回
 {
@@ -411,6 +445,10 @@ GET https://game.com/attrDefinition
 |  | 类型 | 位置 | 描述 | 是否必填 |
 | --- | --- | --- | --- | --- |
 | signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
+| Content-Type | string | header | 请求类型 | 
+ |
+| reqId | string | body | 本次请求唯一id | 
+ |
 
 **response**
 
@@ -431,7 +469,7 @@ GET https://game.com/attrDefinition
 ```http
 # 请求
 GET https://testnet-api.magape.io/buff?address=xxxx
---header 'X-Secret-Key:xxxx'
+--header 'X-Secret-Key:xxxx' 
 
 # 返回
 {
@@ -440,8 +478,8 @@ GET https://testnet-api.magape.io/buff?address=xxxx
     "address":"xxxx",
     "buff":[
       {
-        "attr":"A1",
-        "val":90,
+        "attr":"A1", 
+        "val":90, 
       },
       {
         "attr":"A2",
@@ -467,8 +505,8 @@ GET https://testnet-api.magape.io/buff?address=xxxx
 | err | string | 错误信息，有则不用填 | 否 |
 | address | string | 玩家地址 | 是 |
 | buff | array | 增益 | 是 |
-| buff.attr | string | 属性名称 | 是 |
-| buff.val | int | 属性加成 | 是 |
+| buff[0].attr | string | 属性名称 | 是 |
+| buff[0].val | int | 属性加成 | 是 |
 
 
 # 6、登入游戏
@@ -487,4 +525,5 @@ GET https://testnet-api.magape.io/buff?address=xxxx
 ## 7.2、退出
 ## 7.3、资产查询
 可以查询用户所有的nft，以及代币余额
+## 7.4、支付
 
