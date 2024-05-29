@@ -49,7 +49,6 @@ POST https://game.com/exportableAsset
 | --- | --- | --- | --- |
 | code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
 | err | string | 错误信息，有则不用填 | 
- |
 | data | array | 玩家可导出的道具合集 | 是 |
 | data[0].id | string | 游戏道具id | 是 |
 | data[0].value | int | 游戏中可导出道具的数量 | 是 |
