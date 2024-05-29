@@ -14,7 +14,7 @@
 #### 3.3.1.1、根据玩家钱包地址查询玩家支持导出的道具，支持导出的道具由游戏方决定，通过sdk上传到magape平台
 ```http
 # 请求
-POST https://game.com/exportableAsset?address=xxx
+POST https://game.com/exportableAsset
 --header 'Content-Type: application/json' \
 --header 'signature:xxxx' 
 --data '{
