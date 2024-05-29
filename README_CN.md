@@ -175,7 +175,7 @@ POST https://game.com/deleteAsset
 #### 3.3.1.5、检查是否还有库存支持导入，用于链数据 -> 游戏道具功能
 ```http
 # 请求
-POST https://game.com/checkStorge
+POST https://game.com/checkStorage
 --header 'signature:xxxx' 
 --header 'Content-Type: application/json' \
 --data '{
