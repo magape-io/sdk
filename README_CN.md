@@ -327,7 +327,19 @@ POST https://game.com/increaseAsset
 #### 3.3.2.1、上传游戏可导出道具元数据
 #### [https://github.com/magape-official/sdk/blob/main/java/HTTP_EN.md](https://github.com/magape-official/sdk/blob/main/java/HTTP_EN.md)（参考uploadOrUpdateProp方法）
 # 4、NFT变动
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716267432821-94d111b0-646b-4948-b343-f9e7bfb2f33b.png#averageHue=%23f5f5f5&clientId=uc39d0872-6693-4&from=paste&height=220&id=ue647a564&originHeight=440&originWidth=1348&originalType=binary&ratio=2&rotation=0&showTitle=false&size=70861&status=done&style=none&taskId=u948b271b-0b59-494b-bad7-b048092f544&title=&width=674)
+```mermaid
+sequenceDiagram
+    participant 游戏厂商
+    participant magape
+    participant 玩家
+    		玩家 ->> magape: mint、transfer、merge、dust、upgrade、buy
+		magape -->> magape: 查询这个用户在那些游戏上面有账号
+		magape ->> 游戏厂商: 通过回调地址通知游戏玩家nft资产发生变化(接口1)
+		游戏厂商 ->> magape: 使用http或者sdk拉取玩家最新的nft详情(接口2)
+```
+接口1: - [查询玩家可导出数量](#4111接受magape-nft变更的回调函数用户在nft变更minttransfer会通知游戏方游戏方调用magape接口拉取最新的nft列表)
+
+接口2: - [获取用户所有nft](java/HTTP_EN.md#1getpoplist)
 
 ## 4.1、需要提供的接口
 ### 4.1.1、游戏方
