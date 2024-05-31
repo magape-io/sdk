@@ -12,18 +12,18 @@ Get all NFTs in the wallet
 | propPageReq | body| Query all NFTs of players on the magape platform, including a series of query criteria| Yes |
 
 ## propPageReq
-|  | Descriptions | Required |
-| --- |  --- | --- |
-| address | Gamer's address| Yes |
-| name  | NFT Name，Support fuzzy queries| No |
-| level | NFT Level（Common、Uncommon、Rare、Epic、Legendary）| No |
-| category |NFT Category（City、Jungle、Ocean、Sky） | No |
-| attributes |NFT Attributes | No |
-| tokenIdAsc | order by tokenId asc| No |
-| levelAsc |order by level asc | No |
-| categoryAsc|order by category asc | No |
-| pageNo  | Start Page（Default First Page）| No |
-| pageSize  | Page size（Default 20 data points per page）| No |
+|  | Descriptions|type | Required |
+| --- |---|  --- | --- |
+| address |string| Gamer's address| Yes |
+| name  | string|NFT Name，Support fuzzy queries| No |
+| level | array|NFT Level（Common、Uncommon、Rare、Epic、Legendary）| No |
+| category |array|NFT Category（City、Jungle、Ocean、Sky） | No |
+| attributes |map<string,obj>|NFT Attributes | No |
+| tokenIdAsc |bool| order by tokenId asc| No |
+| levelAsc |bool|order by level asc | No |
+| categoryAsc|bool|order by category asc | No |
+| pageNo  |int| Start Page（Default First Page）| No |
+| pageSize |int | Page size（Default 20 data points per page）| No |
 
 
 ## 1.3、Return data
