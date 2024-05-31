@@ -123,5 +123,14 @@ curl --location 'https://testnet-api.magape.io/api/game/uploadOrUpdateProp' \
 --header 'requestId: 123123136458' \ 
 --header 'X-Secret-Key: xxx' \ 
 --header 'Content-Type: application/json' \ 
---data '{"maxSell": 10, "maxBuy": 10, "cost": 0.1, "id": "402003351", "image": "https://testnet-api.magape.io/ipfs/QmWJEQchSo7HNUzctzTtCPnefFwqzy2ZJAsZcBunvjY8SE", "name": "test"}'
+--data '[
+    {
+        "maxSell": 1000,
+        "maxBuy": 1000,
+        "cost": 0.1,
+        "id": "6",
+        "image": "https://media.istockphoto.com/id/182462356/photo/speedometer-and-tachometer.jpg?s=1024x1024&w=is&k=20&c=Kb9uDKKfcP1Wklnx08G_TIp5xum0rcPDK7GlnqBRdD0=",
+        "name": "gogoCar"
+    }
+]'
 ```
