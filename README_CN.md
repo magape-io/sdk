@@ -337,7 +337,7 @@ sequenceDiagram
 		magape ->> 游戏厂商: 通过回调地址通知游戏玩家nft资产发生变化(接口1)
 		游戏厂商 ->> magape: 使用http或者sdk拉取玩家最新的nft详情(接口2)
 ```
-接口1: - [查询玩家可导出数量](#4111接受magape-nft变更的回调函数用户在nft变更minttransfer会通知游戏方游戏方调用magape接口拉取最新的nft列表)
+接口1: - [提醒游戏用户nft发生变化](#4111接受magape-nft变更的回调函数用户在nft变更minttransfer会通知游戏方游戏方调用magape接口拉取最新的nft列表)
 
 接口2: - [获取用户所有nft](java/HTTP_EN.md#1getpoplist)
 
