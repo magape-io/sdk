@@ -11,10 +11,10 @@
 
 ## 3.3、需要提供的接口
 ### 3.3.1、游戏方
-#### 3.3.1.1、根据玩家钱包地址查询玩家支持导出的道具，支持导出的道具由游戏方决定，通过sdk上传到magape平台
+#### 3.3.1.1、根据玩家钱包地址查询玩家支持导出的道具数量，支持导出的道具由游戏方决定，通过sdk上传到magape平台
 ```http
 # 请求
-POST https://game.com/exportableAsset
+POST https://game.com/exportableAsset?address=xxx
 --header 'Content-Type: application/json' \
 --header 'signature:xxxx' 
 --data '{
@@ -62,8 +62,12 @@ POST https://game.com/freezeAsset
 --data '{
     "reqId":"xxx",
     "address": xxxx,
-    "id": "游戏道具id", 
-    "quantity": 10
+    "assets":[
+      {
+      "propId": "游戏道具id", 
+      "quantity": 10
+      }
+    ]
 }'
 
 # 返回
@@ -81,8 +85,9 @@ POST https://game.com/freezeAsset
 | Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
 | address | string | body | 玩家地址 | 是 |
-| id | string | body | 游戏道具id | 是 |
-| quantity | int | body | 要冻结的数量 | 是 |
+| assets | array | body | 受影响的资产 | 是 |
+| assets[].propId | string | body | 游戏道具id | 是 |
+| assets[].quantity | int | body | 要冻结的数量 | 是 |
 
 **response**
 
@@ -101,8 +106,12 @@ POST https://game.com/unfreezeAsset
 --data '{
     "reqId":"xxx",
     "address": xxxx,
-    "id": "游戏道具id", 
-    "quantity": 10
+    "assets":[
+      {
+      "propId": "游戏道具id", 
+      "quantity": 10
+      }
+    ]
 }'
 
 # 返回
@@ -120,8 +129,9 @@ POST https://game.com/unfreezeAsset
 | Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
 | address | string | body | 玩家地址 | 是 |
-| id | string | body | 游戏道具id | 是 |
-| quantity | int | body | 要解冻的数量 | 是 |
+| assets | array | body | 受影响的资产 | 是 |
+| assets[].propId | string | body | 游戏道具id | 是 |
+| assets[].quantity | int | body | 要解冻的数量 | 是 |
 
 **response**
 
@@ -140,8 +150,12 @@ POST https://game.com/deleteAsset
 --data '{
     "reqId":"xxx",
     "address": xxxx,
-    "id": "游戏道具id", 
-    "quantity": 10
+    "assets":[
+      {
+      "propId": "游戏道具id", 
+      "quantity": 10
+      }
+    ]
 }'
 
 # 返回
@@ -159,8 +173,9 @@ POST https://game.com/deleteAsset
 | Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
 | address | string | body | 玩家地址 | 是 |
-| id | string | body | 游戏道具id | 是 |
-| quantity | int | body | 要删除的数量 | 是 |
+| assets | array | body | 受影响的资产 | 是 |
+| assets[].propId | string | body | 游戏道具id | 是 |
+| assets[].quantity | int | body | 要删除的数量 | 是 |
 
 **response**
 
@@ -175,14 +190,18 @@ POST https://game.com/deleteAsset
 #### 3.3.1.5、检查是否还有库存支持导入，用于链数据 -> 游戏道具功能
 ```http
 # 请求
-POST https://game.com/checkStorage
+POST https://game.com/checkStorge
 --header 'signature:xxxx' 
 --header 'Content-Type: application/json' \
 --data '{
     "reqId":"xxx",
     "address": xxxx,
-    "id": "游戏道具id", 
-    "quantity": 10
+    "assets":[
+      {
+      "propId": "游戏道具id", 
+      "quantity": 10
+      }
+    ]
 }'
 
 # 返回
@@ -201,8 +220,9 @@ POST https://game.com/checkStorage
 | Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
 | address | string | body | 玩家地址 | 是 |
-| id | string | body | 游戏道具id | 是 |
-| quantity | int | body | 购买数量 | 是 |
+| assets | array | body | 受影响的资产 | 是 |
+| assets[].propId | string | body | 游戏道具id | 是 |
+| assets[].quantity | int | body | 要购买的数量 | 是 |
 
 **response**
 
@@ -223,8 +243,12 @@ POST https://game.com/increaseAsset
 --data '{
     "reqId":"xxx", 
     "address": xxxx,
-    "id": "游戏道具id", 
-    "quantity": 10
+    "assets":[
+      {
+      "propId": "游戏道具id", 
+      "quantity": 10
+      }
+    ]
 }'
 
 # 返回
@@ -242,8 +266,9 @@ POST https://game.com/increaseAsset
 | Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
 | address | string | body | 玩家地址 | 是 |
-| id | string | body | 游戏道具id | 是 |
-| quantity | int | body | 新增资产数量 | 是 |
+| assets | array | body | 受影响的资产 | 是 |
+| assets[].propId | string | body | 游戏道具id | 是 |
+| assets[].quantity | int | body | 要删除的数量 | 是 |
 
 **response**
 
@@ -285,10 +310,8 @@ POST https://game.com/nftNotify
 |  | 类型 | 位置 | 描述 | 是否必填 |
 | --- | --- | --- | --- | --- |
 | signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
-| Content-Type | string | header | 请求类型 | 
- |
-| reqId | string | body | 本次请求唯一id | 
- |
+| Content-Type | string | header | 请求类型 | 是 |
+| reqId | string | body | 本次请求唯一id | 是 |
 | address | string | body | 玩家地址 | 是 |
 
 **response**
@@ -371,7 +394,7 @@ ByteArrayOutputStream output = new ByteArrayOutputStream();
 byte[] buffer = new byte[1024];
 int n;
 while (-1 != (n = inputStream.read(buffer))) {
-            output.write(buffer, 0, n);
+   output.write(buffer, 0, n);
 }
 String payload = output.toString(StandardCharsets.UTF_8);
 String sigHeader = request.getHeader("signature");
@@ -435,7 +458,7 @@ POST https://game.com/attrDefinition
     ]
   },
   "err":"" 
-  }
+}
 ```
 
 
@@ -525,4 +548,3 @@ GET https://testnet-api.magape.io/buff?address=xxxx
 ## 7.3、资产查询
 可以查询用户所有的nft，以及代币余额
 ## 7.4、支付
-
