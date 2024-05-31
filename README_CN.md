@@ -21,7 +21,7 @@ sequenceDiagram
 		blockChain ->> magape: 7、监听合约事件
 		magape ->> 游戏厂商: 8、调用游戏厂商接口给玩家新增道具(接口4)
 ```
-接口1: - [跳转到sdk文档](java/)
+接口1: - [跳转到sdk文档](java/HTTP_EN.md#2uploadOrUpdateProp)
 
 接口2: - [跳转到 3.3.1.1](#3311根据玩家钱包地址查询玩家支持导出的道具数量支持导出的道具由游戏方决定通过sdk上传到magape平台)
 
