@@ -6,6 +6,23 @@
 # 3、游戏道具与ERC20代币转换
 ## 3.1、erc20代币 -> 游戏道具
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716266171569-03ebb045-ebf5-4186-983c-80bc622ad695.png#averageHue=%23f6f6f6&clientId=u8d8f315f-fec8-4&from=paste&height=346&id=ua3dff10c&originHeight=692&originWidth=1640&originalType=binary&ratio=2&rotation=0&showTitle=false&size=103895&status=done&style=none&taskId=u0feb4e26-907b-4a43-8857-036e02f5972&title=&width=820)
+
+```mermaid
+sequenceDiagram
+    participant 游戏厂商
+    participant magape
+		participant 玩家
+    游戏厂商 ->> magape: 1、通过sdk上传支持导出的道具列表(接口1)
+		magape -> magape: 2、审核
+		玩家 ->> magape: 3、在magape市场可以看到自己在不同游戏支持导入导出的道具(接口2)
+		玩家 ->> magape: 4、执行导入
+		magape ->> 游戏厂商: 5、检查对应道具是否有足够库存支持导入(接口3)
+		magape ->> blockChain: 6、调用合约
+		blockChain ->> magape: 7、监听合约事件
+		magape ->> 游戏厂商: 8、调用游戏厂商接口给玩家新增道具(接口4)
+```
+接口1:[跳转到 3.3.1.1](#3-3-1-1-根据玩家钱包地址查询玩家支持导出的道具数量-支持导出的道具由游戏方决定-通过sdk上传到magape平台)
+
 ## 3.2、游戏道具 -> erc20代币
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716266351313-cbd47fdd-6ce7-446d-b76b-ff375721b847.png#averageHue=%23f6f6f6&clientId=u8d8f315f-fec8-4&from=paste&height=365&id=u74ad46cb&originHeight=730&originWidth=1776&originalType=binary&ratio=2&rotation=0&showTitle=false&size=118676&status=done&style=none&taskId=ucb75229d-6163-4006-8fa8-c383c49e62d&title=&width=888)
 
