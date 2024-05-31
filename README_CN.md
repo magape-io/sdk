@@ -5,8 +5,6 @@
 
 # 3、游戏道具与ERC20代币转换
 ## 3.1、erc20代币 -> 游戏道具
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716266171569-03ebb045-ebf5-4186-983c-80bc622ad695.png#averageHue=%23f6f6f6&clientId=u8d8f315f-fec8-4&from=paste&height=346&id=ua3dff10c&originHeight=692&originWidth=1640&originalType=binary&ratio=2&rotation=0&showTitle=false&size=103895&status=done&style=none&taskId=u0feb4e26-907b-4a43-8857-036e02f5972&title=&width=820)
-
 ```mermaid
 sequenceDiagram
     participant 游戏厂商
