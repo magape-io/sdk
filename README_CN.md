@@ -21,7 +21,7 @@ sequenceDiagram
 		blockChain ->> magape: 7、监听合约事件
 		magape ->> 游戏厂商: 8、调用游戏厂商接口给玩家新增道具(接口4)
 ```
-接口1:[跳转到 3.3.1.1](#3311、根据玩家钱包地址查询玩家支持导出的道具数量，支持导出的道具由游戏方决定，通过sdk上传到magape平台)
+接口1:- [跳转到 3.3.1.1](#3311根据玩家钱包地址查询玩家支持导出的道具数量支持导出的道具由游戏方决定通过sdk上传到magape平台)
 
 ## 3.2、游戏道具 -> erc20代币
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716266351313-cbd47fdd-6ce7-446d-b76b-ff375721b847.png#averageHue=%23f6f6f6&clientId=u8d8f315f-fec8-4&from=paste&height=365&id=u74ad46cb&originHeight=730&originWidth=1776&originalType=binary&ratio=2&rotation=0&showTitle=false&size=118676&status=done&style=none&taskId=ucb75229d-6163-4006-8fa8-c383c49e62d&title=&width=888)
