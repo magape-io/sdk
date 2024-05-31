@@ -38,21 +38,15 @@ sequenceDiagram
 		magape -> magape: 2、审核
 		玩家 ->> magape: 3、在magape市场可以看到自己在不同游戏支持导入导出的道具(接口2)
 		玩家 ->> magape: 4、执行导出
-		magape ->> 游戏厂商: 5、调用游戏厂商接口冻结玩家道具(接口3)
+		magape ->> 游戏厂商: 5、调用游戏厂商接口删除玩家道具(接口3)
 		magape ->> blockChain: 6、调用合约
 		blockChain ->> magape: 7、监听合约事件
-		magape ->> 游戏厂商: 9、调用游戏厂商接口删除玩家道具(接口4)
-		magape ->> 游戏厂商: 10、如果调用合约失败，调用游戏厂商接口解冻结玩家道具(接口5)
 ```
 接口1: - [上传可导出道具元数据](java/HTTP_EN.md#2-uploadorupdateprop)
 
 接口2: - [查询玩家可导出数量](#3311根据玩家钱包地址查询玩家支持导出的道具数量支持导出的道具由游戏方决定通过sdk上传到magape平台)
 
-接口3: - [冻结玩家道具](#3312冻结玩家道具用于游戏道具到链数据功能)
-
-接口4: - [删除玩家道具](#3314删除玩家道具用于游戏道具到链数据功能)
-
-接口5: - [解冻玩家道具](#3313解冻玩家道具用于游戏道具到链数据功能)
+接口3: - [删除玩家道具](#3314删除玩家道具用于游戏道具到链数据功能)
 
 ## 3.3、需要提供的接口
 ### 3.3.1、游戏方
@@ -98,95 +92,8 @@ POST https://game.com/exportableAsset?address=xxx
 | data[0].id | string | 游戏道具id | 是 |
 | data[0].value | int | 游戏中可导出道具的数量 | 是 |
 
-#### 3.3.1.2、冻结玩家道具，用于游戏道具到链数据功能
-```http
-# 请求
-POST https://game.com/freezeAsset
---header 'signature:xxxx'
---header 'Content-Type: application/json' \
---data '{
-    "reqId":"xxx",
-    "address": xxxx,
-    "assets":[
-      {
-      "propId": "游戏道具id", 
-      "quantity": 10
-      }
-    ]
-}'
 
-# 返回
-{
-"code":200｜400｜401｜500 // 返回状态码
-"data":"success" | "fail",
-"err":"" 
-}
-```
-**request**
-
-|  | 类型 | 位置 | 描述 | 是否必填 |
-| --- | --- | --- | --- | --- |
-| signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
-| Content-Type | string | header | 请求类型application/json | 是 |
-| reqId | string | body | 本次请求的唯一id | 是 |
-| address | string | body | 玩家地址 | 是 |
-| assets | array | body | 受影响的资产 | 是 |
-| assets[].propId | string | body | 游戏道具id | 是 |
-| assets[].quantity | int | body | 要冻结的数量 | 是 |
-
-**response**
-
-|  | 类型 | 描述 | 是否必填 |
-| --- | --- | --- | --- |
-| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
-| err | string | 错误信息，有则不用填 | 否 |
-| data | string | "success" &#124; "fail | 是 |
-
-#### 3.3.1.3、解冻玩家道具，用于游戏道具到链数据功能
-```http
-# 请求
-POST https://game.com/unfreezeAsset
---header 'signature:xxxx'
---header 'Content-Type: application/json' \
---data '{
-    "reqId":"xxx",
-    "address": xxxx,
-    "assets":[
-      {
-      "propId": "游戏道具id", 
-      "quantity": 10
-      }
-    ]
-}'
-
-# 返回
-{
-"code":200,
-"data":"success" | "fail",
-"err":""
-}
-```
-**request**
-
-|  | 类型 | 位置 | 描述 | 是否必填 |
-| --- | --- | --- | --- | --- |
-| signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
-| Content-Type | string | header | 请求类型application/json | 是 |
-| reqId | string | body | 本次请求的唯一id | 是 |
-| address | string | body | 玩家地址 | 是 |
-| assets | array | body | 受影响的资产 | 是 |
-| assets[].propId | string | body | 游戏道具id | 是 |
-| assets[].quantity | int | body | 要解冻的数量 | 是 |
-
-**response**
-
-|  | 类型 | 描述 | 是否必填 |
-| --- | --- | --- | --- |
-| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
-| err | string | 错误信息，有则不用填 | 否 |
-| data | string | "success" &#124; "fail | 是 |
-
-#### 3.3.1.4、删除玩家道具，用于游戏道具到链数据功能
+#### 3.3.1.2、删除玩家道具，用于游戏道具到链数据功能
 ```http
 # 请求
 POST https://game.com/deleteAsset
