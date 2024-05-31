@@ -95,15 +95,15 @@ Upload or update game props，After uploading, the administrator will review the
 | data |body|The list of all game items to be exported has no limit on the number of items that can be imported. Please refer to the following text for the format of the data. |yes|
 
 ## 2.2、Data
-|  | Descriptions | Required |
-| --- | --- | --- |
-| id | The identification code for game items must be unique for each item to be identified. This ID will be used for all imports and exports.|yes|
-| maxSell |How many items can the entire game sell at most |yes|
-| maxBuy | How many items can I buy at most through Mac|yes|
-| cost | The number of tokens that this item may be worth. If it is a scope item, then each item is worth a token quantity. Appliances should be priced fairly in order to be accepted by our ecosystem.|yes|
-| image |The graphics of the project to be exported. Game developers should host their own images to achieve renewability. Our recommended monitor size is 300 x 300. |yes|
-| name |The name should be unique and clearly specified. If two names are found, the latter one takes effect. An example is hierarchical, where the higher the level, the more difficult it is to achieve, and the corresponding increase in export value should be made.|yes|
-| description | A description of an item, which can describe its abilities or simply tell a story about the item.|NO|
+|  | Descriptions| type | Required |
+| --- | --- | --- | --- |
+| id |string | The identification code for game items must be unique for each item to be identified. This ID will be used for all imports and exports.|yes|
+| maxSell| int |How many items can the entire game sell at most |yes|
+| maxBuy |int | How many items can I buy at most through Mac|yes|
+| cost |double|  The number of tokens that this item may be worth. If it is a scope item, then each item is worth a token quantity. Appliances should be priced fairly in order to be accepted by our ecosystem.|yes|
+| image |string |The graphics of the project to be exported. Game developers should host their own images to achieve renewability. Our recommended monitor size is 300 x 300. |yes|
+| name |string|The name should be unique and clearly specified. If two names are found, the latter one takes effect. An example is hierarchical, where the higher the level, the more difficult it is to achieve, and the corresponding increase in export value should be made.|yes|
+| description |string | A description of an item, which can describe its abilities or simply tell a story about the item.|NO|
 
 
 ## 2.3、Return data
