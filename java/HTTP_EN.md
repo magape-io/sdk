@@ -78,7 +78,9 @@ curl --location 'https://testnet-api.magape.io/api/nft/nftList' \
 --header 'X-Secret-Key: xxx' \ 
 --header 'Content-Type: application/json' \ 
 --data '{
-"address":xxxx
+"address":xxxx,
+"level":["Common"],
+"category":["City"]
 }' 
 ```
 
