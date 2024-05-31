@@ -9,8 +9,8 @@
 sequenceDiagram
     participant 游戏厂商
     participant magape
-		participant 玩家
-    游戏厂商 ->> magape: 1、通过sdk上传支持导出的道具列表(接口1)
+    participant 玩家
+    		游戏厂商 ->> magape: 1、通过sdk上传支持导出的道具列表(接口1)
 		magape -> magape: 2、审核
 		玩家 ->> magape: 3、在magape市场可以看到自己在不同游戏支持导入导出的道具(接口2)
 		玩家 ->> magape: 4、执行导入
@@ -29,7 +29,30 @@ sequenceDiagram
 
 
 ## 3.2、游戏道具 -> erc20代币
-![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716266351313-cbd47fdd-6ce7-446d-b76b-ff375721b847.png#averageHue=%23f6f6f6&clientId=u8d8f315f-fec8-4&from=paste&height=365&id=u74ad46cb&originHeight=730&originWidth=1776&originalType=binary&ratio=2&rotation=0&showTitle=false&size=118676&status=done&style=none&taskId=ucb75229d-6163-4006-8fa8-c383c49e62d&title=&width=888)
+```mermaid
+sequenceDiagram
+    participant 游戏厂商
+    participant magape
+    participant 玩家
+    		游戏厂商 ->> magape: 1、通过sdk上传支持导出的道具列表(接口1)
+		magape -> magape: 2、审核
+		玩家 ->> magape: 3、在magape市场可以看到自己在不同游戏支持导入导出的道具(接口2)
+		玩家 ->> magape: 4、执行导出
+		magape ->> 游戏厂商: 5、调用游戏厂商接口冻结玩家道具(接口3)
+		magape ->> blockChain: 6、调用合约
+		blockChain ->> magape: 7、监听合约事件
+		magape ->> 游戏厂商: 9、调用游戏厂商接口删除玩家道具(接口4)
+		magape ->> 游戏厂商: 10、如果调用合约失败，调用游戏厂商接口解冻结玩家道具(接口5)
+```
+接口1: - [跳转到sdk文档](java/HTTP_EN.md#2-uploadorupdateprop)
+
+接口2: - [查询玩家可导出数量](#3311根据玩家钱包地址查询玩家支持导出的道具数量支持导出的道具由游戏方决定通过sdk上传到magape平台)
+
+接口3: - [冻结玩家道具](#3312冻结玩家道具用于游戏道具到链数据功能)
+
+接口4: - [删除玩家道具](#3314删除玩家道具用于游戏道具链数据功能)
+
+接口5: - [解冻玩家道具](#3313解冻玩家道具用于游戏道具链数据功能)
 
 ## 3.3、需要提供的接口
 ### 3.3.1、游戏方
@@ -75,7 +98,7 @@ POST https://game.com/exportableAsset?address=xxx
 | data[0].id | string | 游戏道具id | 是 |
 | data[0].value | int | 游戏中可导出道具的数量 | 是 |
 
-#### 3.3.1.2、冻结玩家道具，用于游戏道具 -> 链数据功能
+#### 3.3.1.2、冻结玩家道具，用于游戏道具到链数据功能
 ```http
 # 请求
 POST https://game.com/freezeAsset
@@ -119,7 +142,7 @@ POST https://game.com/freezeAsset
 | err | string | 错误信息，有则不用填 | 否 |
 | data | string | "success" &#124; "fail | 是 |
 
-#### 3.3.1.3、解冻玩家道具，用于游戏道具 -> 链数据功能
+#### 3.3.1.3、解冻玩家道具，用于游戏道具到链数据功能
 ```http
 # 请求
 POST https://game.com/unfreezeAsset
@@ -163,7 +186,7 @@ POST https://game.com/unfreezeAsset
 | err | string | 错误信息，有则不用填 | 否 |
 | data | string | "success" &#124; "fail | 是 |
 
-#### 3.3.1.4、删除玩家道具，用于游戏道具 -> 链数据功能
+#### 3.3.1.4、删除玩家道具，用于游戏道具到链数据功能
 ```http
 # 请求
 POST https://game.com/deleteAsset
