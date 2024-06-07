@@ -1,4 +1,4 @@
-[# 1、SDK import (latest)
+# 1、SDK import (latest)
 
 ```xml
 
@@ -47,10 +47,10 @@ Get all NFTs in the wallet
 
 ### 3.1.2、Input parameters
 
-|            | Descriptions | Postiton                                                                                               | Required |
-|------------|--------------|--------------------------------------------------------------------------------------------------------|----------|
-| requestId  | header       | Unique traceId, cannot be repeated                                                                     | Yes      |
-| NFTListReq | body         | Request body, with multiple built-in request parameters, refer to the explanation of propPageReq below | Yes      |
+|          | type  |  Descriptions                                                                                               | Required |
+|------------|------------|--------------------------------------------------------------------------------------------------------|----------|
+| requestId  |string |  Unique traceId, cannot be repeated                                                                     | Yes      |
+| NFTListReq |object |  Request body, with multiple built-in request parameters, refer to the explanation of propPageReq below | Yes      |
 
 ### NFTListReq
 
@@ -153,10 +153,10 @@ Upload or update game props
 
 ### 3.2.2、Input parameters
 
-|           | Postiton | type   | Descriptions                                                                                                                                                       | Required |
-|-----------|----------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| requestId | header   | string | Unique traceId, cannot be repeated                                                                                                                                 | Yes      |
-| gameProps | body     | array  | The list of all game items to be exported has no limit on the number of items that can be imported. Please refer to the following text for the format of the data. | yes      |
+|            | type   | Descriptions                                                                                                                                                       | Required |
+|-----------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| requestId    | string | Unique traceId, cannot be repeated                                                                                                                                 | Yes      |
+| gameProps    | array  | The list of all game items to be exported has no limit on the number of items that can be imported. Please refer to the following text for the format of the data. | yes      |
 
 ## 3.2.3、gameProp
 
@@ -186,8 +186,8 @@ public void test() throws Exception {
     MagApe.live = false;
     MagApe.publicKey = "apply from magape";
     MagApe.privateKey = "apply from magape";
-    boolean hehe = Game.uploadOrUpdateProp(String.valueOf(System.currentTimeMillis()), List.of(GameProp.builder().id("9").name("hehe").cost(10d).type(1).maxBuy(100).maxSell(10).image("http://hehe")));
-    System.out.println(hehe);
+    boolean result = Game.uploadOrUpdateProp(String.valueOf(System.currentTimeMillis()), List.of(GameProp.builder().id("9").name("hehe").cost(10d).type(1).maxBuy(100).maxSell(10).image("http://hehe")));
+    System.out.println(result);
 }
 ```
 
@@ -199,10 +199,10 @@ obtain the current user's NFT has an impact on the corresponding game
 
 ### 3.2.2、Input parameters
 
-|                          | Postiton | type   | Descriptions                       | Required |
-|--------------------------|----------|--------|------------------------------------|----------|
-| requestId                | header   | string | Unique traceId, cannot be repeated | Yes      |
-| NFTOverallPerformanceReq | body     | object | query condition                    | yes      |
+|                        | type   | Descriptions                       | Required |
+|--------------------------| --------|------------------------------------|----------|
+| requestId                |  string | Unique traceId, cannot be repeated | Yes      |
+| NFTOverallPerformanceReq |  object | query condition                    | yes      |
 
 ## 3.2.3、NFTOverallPerformanceReq
 
