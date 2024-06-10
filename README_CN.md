@@ -357,29 +357,19 @@ while (-1 != (n = inputStream.read(buffer))) {
 }
 String payload = output.toString(StandardCharsets.UTF_8);
 String sigHeader = request.getHeader("signature");
-
-String address = request.getParameter("address");
-
-String privateKeyStr = "magape平台私钥";
 String publicKeyStr = "magape平台公钥";
 
-byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyStr);
-PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-KeyFactory keyFactory = KeyFactory.getInstance("EC");
-PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
+byte[] publicKeyBytes = Base64.decodeBase64(publicKeyStr);
+X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
+KeyFactory keyFactory = KeyFactory.getInstance("Ed25519");
+PublicKey publicKey = keyFactory.generatePublic(keySpec);
 
- // 从Base64字符串恢复公钥
- byte[] publicKeyBytes = Base64.getDecoder().decode(publicKeyStr);
- X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyBytes);
- PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
+Signature signDecode = Signature.getInstance("Ed25519");
+signDecode.initVerify(publicKey);
+signDecode.update(source.getBytes(StandardCharsets.UTF_8));
+boolean verifyResult = signDecode.verify(Base64.decodeBase64(rsaData));
 
-Sign sign = SecureUtil.sign(SignAlgorithm.SHA256withECDSA);
-sign.setPrivateKey(privateKey);
-
-// 验签
-sign.setPublicKey(publicKey);
-boolean verify = sign.verify(payload.getBytes(), Base64.getDecoder().decode(sigHeader));
-System.out.println("Verify Result: " + verify);
+System.out.println("Verify Result: " + verifyResult);
 ```
 # 5、NFT在游戏中的影响
 在magape页面设置游戏支持的nft类型，目前分为4类"City", "Jungle", “Ocean", "Sky",每一种类型下面有不同的属性。

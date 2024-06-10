@@ -3,6 +3,183 @@
 | MainNet | https://api.magape.io         |
 | TestNet | https://testnet-api.magape.io |
 
+# signature
+## generate signature
+java
+```java
+/**
+ *@param data need sign data
+ *@param pKey magape privateKey
+ */
+public static String digitalSign(byte[] data, String pKey) {
+    try {
+        PrivateKey privateKey = KeyFactory.getInstance("Ed25519")
+                .generatePrivate(new PKCS8EncodedKeySpec(Base64.decodeBase64(pKey)));
+
+        Signature signEncode = Signature.getInstance("Ed25519");
+        signEncode.initSign(privateKey);
+        signEncode.update(data);
+        byte[] signedBytes = signEncode.sign();
+        return Base64.encodeBase64String(signedBytes);
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw new RuntimeException(e);
+    }
+}
+```
+js
+```js
+const crypto = require('crypto');
+
+function digitalSign(data, pKey) {
+    try {
+        const privateKey = crypto.createPrivateKey({
+            key: Buffer.from(pKey, 'base64'),
+            format: 'der',
+            type: 'ed25519'
+        });
+
+        const sign = crypto.createSign('ed25519');
+        sign.update(data);
+        const signature = sign.sign(privateKey);
+
+        return signature.toString('base64');
+    } catch (err) {
+        console.error(err);
+        throw new Error(err);
+    }
+}
+```
+go
+```go
+import (
+    "crypto/ed25519"
+    "encoding/base64"
+)
+
+func digitalSign(data []byte, pKey string) (string, error) {
+    privateKeyBytes, err := base64.StdEncoding.DecodeString(pKey)
+    if err != nil {
+        return "", err
+    }
+
+    signature := ed25519.Sign(ed25519.PrivateKey(privateKeyBytes), data)
+    return base64.StdEncoding.EncodeToString(signature), nil
+}
+```
+c#
+```c#
+using System;
+using System.Security.Cryptography;
+using System.Text;
+
+public static string DigitalSign(byte[] data, string pKey)
+{
+    try
+    {
+        byte[] privateKeyBytes = Convert.FromBase64String(pKey);
+
+        using (Ed25519 ed25519 = Ed25519.Ed25519Utils.NewKey(privateKeyBytes))
+        {
+            byte[] signatureBytes = ed25519.SignData(data);
+            return Convert.ToBase64String(signatureBytes);
+        }
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e.Message);
+        throw new Exception(e.Message);
+    }
+}
+```
+
+## verify signature
+```java
+/** Verify signature [public key verification]
+ * @param source Data to be decrypted
+ * @param pubKey  Public key
+ * @return byte[] Decrypting data
+ * @throws Exception
+ */
+public static boolean signVerify(String source, String rsaData, String pubKey) {
+    try {
+        byte[] publicKeyBytes = Base64.decodeBase64(pubKey);
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("Ed25519");
+        PublicKey publicKey = keyFactory.generatePublic(keySpec);
+
+        Signature signDecode = Signature.getInstance("Ed25519");
+        signDecode.initVerify(publicKey);
+        signDecode.update(source.getBytes(StandardCharsets.UTF_8));
+        return signDecode.verify(Base64.decodeBase64(rsaData));
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    return false;
+}
+```
+js
+```js
+const crypto = require('crypto');
+
+function signVerify(source, rsaData, pubKey) {
+  try {
+    const publicKey = crypto.createPublicKey({
+      key: Buffer.from(pubKey, 'base64'),
+      format: 'der',
+      type: 'ed25519'
+    });
+
+    const verify = crypto.createVerify('ed25519');
+    verify.update(source);
+
+    return verify.verify(publicKey, Buffer.from(rsaData, 'base64'));
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+}
+```
+```go
+import (
+    "crypto/ed25519"
+    "encoding/base64"
+)
+
+func signVerify(source, rsaData, pubKey string) bool {
+    publicKeyBytes, _ := base64.StdEncoding.DecodeString(pubKey)
+    signature, _ := base64.StdEncoding.DecodeString(rsaData)
+
+    return ed25519.Verify(ed25519.PublicKey(publicKeyBytes), []byte(source), signature)
+}
+```
+c#
+```c#
+
+using System;
+using System.Security.Cryptography;
+using System.Text;
+
+public static bool SignVerify(string source, string rsaData, string pubKey)
+{
+    try
+    {
+        byte[] publicKeyBytes = Convert.FromBase64String(pubKey);
+        byte[] signatureBytes = Convert.FromBase64String(rsaData);
+
+        using (Ed25519 ed25519 = Ed25519.Ed25519Utils.NewKey(publicKeyBytes))
+        {
+            return ed25519.VerifySignature(Encoding.UTF8.GetBytes(source), signatureBytes);
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+        return false;
+    }
+}
+```
+
 # 1、/api/v1/nft/nftList
 
 ## 1.1、Features
@@ -15,7 +192,7 @@ Get all NFTs in the wallet
 |--------------|--------------|----------------------------------------------------------------------------------------|----------|
 | requestId    | header       | Unique traceId, cannot be repeated                                                     | Yes      |
 | signature    | header       | Signature information                                                                  | Yes      |
-| X-Access-Key | header       | Game merchants' access keys on the magape platform                                     | Yes      |
+| X-Access-Key | header       | Game merchants' access keys(pubKey) on the magape platform                                   | Yes      |
 | propPageReq  | body         | Query all NFTs of players on the magape platform, including a series of query criteria | Yes      |
 
 ## propPageReq
@@ -100,7 +277,7 @@ they are reasonable. Only after the review is approved can MAC redemption be car
 |--------------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
 | requestId    | header       | Unique traceId, cannot be repeated                                                                                                                                 | Yes      |
 | signature    | header       | Signature information                                                                                                                                              | Yes      |
-| X-Access-Key | header       | Game merchants' access keys on the magape platform                                                                                                                 | Yes      |
+| X-Access-Key | header       | Game merchants' access keys(pubKey) on the magape platform                                                                                                                   | Yes      |
 | data         | body         | The list of all game items to be exported has no limit on the number of items that can be imported. Please refer to the following text for the format of the data. | Yes      |
 
 ## 2.2、Data
