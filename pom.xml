@@ -4,7 +4,7 @@
 
     <groupId>io.github.magape-official</groupId>
     <artifactId>magape-java-sdk</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <packaging>jar</packaging>
 
     <name>magape-java-sdk</name>
