@@ -8,14 +8,14 @@ public class MagApe {
     public static volatile boolean live;
 
     /**
-     * publicKey Apply from the MagApe platform
+     * accessKey Apply from the MagApe platform
      */
-    public static volatile String publicKey;
+    public static volatile String accessKey;
 
     /**
-     * privateKey Apply from the MagApe platform
+     * secretKey Apply from the MagApe platform
      */
-    public static volatile String privateKey;
+    public static volatile String secretKey;
 
     /**
      * mainNet URL

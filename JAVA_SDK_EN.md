@@ -5,7 +5,7 @@
 <dependency>
     <groupId>io.github.magape-official</groupId>
     <artifactId>magape-java-sdk</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 </dependency>
 ```
 
@@ -17,12 +17,12 @@
 public class MagApeConfiguration {
 
     // from magape platfrom game administrator page
-    @Value("${magape.publicKey}")
-    String publicKey;
+    @Value("${magape.accessKey}")
+    String accessKey;
 
     // from magape platfrom game administrator page
-    @Value("${magape.privateKey}")
-    String privateKey;
+    @Value("${magape.secretKey}")
+    String secretKey;
 
     // mode：true mainnet，false testnet
     @Value("${magape.live}")
@@ -31,8 +31,8 @@ public class MagApeConfiguration {
     @PostConstruct
     public void init() {
         MagApe.live = live;
-        MagApe.publicKey = publicKey;
-        MagApe.privateKey = privateKey;
+        MagApe.accessKey = accessKey;
+        MagApe.secretKey = secretKey;
     }
 }
 ```
@@ -111,7 +111,7 @@ public Response nftNotify(HttpServletRequest request) throws IOException {
     String payload = payload(request);
     String sigHeader = request.getHeader("signature");
 
-    boolean verify = DigitalSignECDSA.signVerify(payload, sigHeader, publicKey);
+    boolean verify = DigitalSignECDSA.signVerify(payload, sigHeader, accessKey);
     log.info("Verify Result:{}", verify);
 
     try {
@@ -184,8 +184,8 @@ true | false
 @Test
 public void test() throws Exception {
     MagApe.live = false;
-    MagApe.publicKey = "apply from magape";
-    MagApe.privateKey = "apply from magape";
+    MagApe.accessKey = "apply from magape";
+    MagApe.secretKey = "apply from magape";
     boolean result = Game.uploadOrUpdateProp(String.valueOf(System.currentTimeMillis()), List.of(GameProp.builder().id("9").name("hehe").cost(10d).type(1).maxBuy(100).maxSell(10).image("http://hehe")));
     System.out.println(result);
 }
@@ -235,8 +235,8 @@ obtain the current user's NFT has an impact on the corresponding game
 @Test
 public void test() throws Exception {
     MagApe.live = false;
-    MagApe.publicKey = "apply from magape";
-    MagApe.privateKey = "apply from magape";
+    MagApe.accessKey = "apply from magape";
+    MagApe.secretKey = "apply from magape";
     NFTOverallPerformance performance = Wallet.performance(String.valueOf(System.currentTimeMillis()), NFTOverallPerformanceReq.build().address("0x4D11dF920E0E48c7E132e5a9754C7e754Cd6EBFB").networkId(97));
     System.out.println(performance);
 }

@@ -9,7 +9,7 @@ java
 ```java
 /**
  *@param data need sign data
- *@param pKey magape privateKey
+ *@param pKey magape secretKey
  */
 public static String digitalSign(byte[] data, String pKey) {
     try {
@@ -95,16 +95,16 @@ public static string DigitalSign(byte[] data, string pKey)
 
 ## verify signature
 ```java
-/** Verify signature [public key verification]
+/** Verify signature [access Key verification]
  * @param source Data to be decrypted
- * @param pubKey  Public key
+ * @param accessKey  access Key
  * @return byte[] Decrypting data
  * @throws Exception
  */
-public static boolean signVerify(String source, String rsaData, String pubKey) {
+public static boolean signVerify(String source, String rsaData, String accessKey) {
     try {
-        byte[] publicKeyBytes = Base64.decodeBase64(pubKey);
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
+        byte[] accessKeyBytes = Base64.decodeBase64(accessKey);
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(accessKeyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("Ed25519");
         PublicKey publicKey = keyFactory.generatePublic(keySpec);
 
@@ -122,10 +122,10 @@ js
 ```js
 const crypto = require('crypto');
 
-function signVerify(source, rsaData, pubKey) {
+function signVerify(source, rsaData, accessKey) {
   try {
     const publicKey = crypto.createPublicKey({
-      key: Buffer.from(pubKey, 'base64'),
+      key: Buffer.from(accessKey, 'base64'),
       format: 'der',
       type: 'ed25519'
     });
@@ -146,11 +146,11 @@ import (
     "encoding/base64"
 )
 
-func signVerify(source, rsaData, pubKey string) bool {
-    publicKeyBytes, _ := base64.StdEncoding.DecodeString(pubKey)
+func signVerify(source, rsaData, accessKey string) bool {
+    accessKeyBytes, _ := base64.StdEncoding.DecodeString(accessKey)
     signature, _ := base64.StdEncoding.DecodeString(rsaData)
 
-    return ed25519.Verify(ed25519.PublicKey(publicKeyBytes), []byte(source), signature)
+    return ed25519.Verify(ed25519.PublicKey(accessKeyBytes), []byte(source), signature)
 }
 ```
 c#
@@ -160,14 +160,14 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-public static bool SignVerify(string source, string rsaData, string pubKey)
+public static bool SignVerify(string source, string rsaData, string accessKey)
 {
     try
     {
-        byte[] publicKeyBytes = Convert.FromBase64String(pubKey);
+        byte[] accessKeyBytes = Convert.FromBase64String(accessKey);
         byte[] signatureBytes = Convert.FromBase64String(rsaData);
 
-        using (Ed25519 ed25519 = Ed25519.Ed25519Utils.NewKey(publicKeyBytes))
+        using (Ed25519 ed25519 = Ed25519.Ed25519Utils.NewKey(accessKeyBytes))
         {
             return ed25519.VerifySignature(Encoding.UTF8.GetBytes(source), signatureBytes);
         }
@@ -192,7 +192,7 @@ Get all NFTs in the wallet
 |--------------|--------------|----------------------------------------------------------------------------------------|----------|
 | requestId    | header       | Unique traceId, cannot be repeated                                                     | Yes      |
 | signature    | header       | Signature information                                                                  | Yes      |
-| X-Access-Key | header       | Game merchants' access keys(pubKey) on the magape platform                                   | Yes      |
+| X-Access-Key | header       | Game merchants' access keys(accessKey) on the magape platform                                   | Yes      |
 | propPageReq  | body         | Query all NFTs of players on the magape platform, including a series of query criteria | Yes      |
 
 ## propPageReq
@@ -277,7 +277,7 @@ they are reasonable. Only after the review is approved can MAC redemption be car
 |--------------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
 | requestId    | header       | Unique traceId, cannot be repeated                                                                                                                                 | Yes      |
 | signature    | header       | Signature information                                                                                                                                              | Yes      |
-| X-Access-Key | header       | Game merchants' access keys(pubKey) on the magape platform                                                                                                                   | Yes      |
+| X-Access-Key | header       | Game merchants' access keys(accessKey) on the magape platform                                                                                                                   | Yes      |
 | data         | body         | The list of all game items to be exported has no limit on the number of items that can be imported. Please refer to the following text for the format of the data. | Yes      |
 
 ## 2.2、Data

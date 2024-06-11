@@ -15,9 +15,9 @@ public class BaseApi {
 
     public static <T> T execute(ApiRequest apiRequest,Class<T> tClass) throws Exception {
         OkHttpUtils client = OkHttpUtils.builder().url(MagApe.getApiBase() + apiRequest.getPath())
-                .addHeader(ACCESS_KEY,MagApe.publicKey)
+                .addHeader(ACCESS_KEY,MagApe.accessKey)
                 .addHeader(REQUEST_ID,apiRequest.getRequestId())
-                .addHeader(SIGNATURE, DigitalSignECDSA.digitalSign(JSONUtil.toJSON(apiRequest.getParam()).getBytes(Charset.defaultCharset()), MagApe.privateKey));
+                .addHeader(SIGNATURE, DigitalSignECDSA.digitalSign(JSONUtil.toJSON(apiRequest.getParam()).getBytes(Charset.defaultCharset()), MagApe.secretKey));
         switch (apiRequest.getMethod()) {
             case POST -> {
                 if (apiRequest.getContentType().equals(APPLICATION_JSON)) {

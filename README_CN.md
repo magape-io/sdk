@@ -357,15 +357,15 @@ while (-1 != (n = inputStream.read(buffer))) {
 }
 String payload = output.toString(StandardCharsets.UTF_8);
 String sigHeader = request.getHeader("signature");
-String publicKeyStr = "magape平台公钥";
+String accessKeyStr = "magape平台公钥";
 
-byte[] publicKeyBytes = Base64.decodeBase64(publicKeyStr);
-X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
+byte[] accessKeyBytes = Base64.decodeBase64(accessKeyStr);
+X509EncodedKeySpec keySpec = new X509EncodedKeySpec(accessKeyBytes);
 KeyFactory keyFactory = KeyFactory.getInstance("Ed25519");
-PublicKey publicKey = keyFactory.generatePublic(keySpec);
+PublicKey accessKey = keyFactory.generatePublic(keySpec);
 
 Signature signDecode = Signature.getInstance("Ed25519");
-signDecode.initVerify(publicKey);
+signDecode.initVerify(accessKey);
 signDecode.update(source.getBytes(StandardCharsets.UTF_8));
 boolean verifyResult = signDecode.verify(Base64.decodeBase64(rsaData));
 
@@ -439,45 +439,67 @@ POST https://game.com/attrDefinition
 5.1.1.2.1、游戏获取用户所有nft总的加成，算法参考上述表格
 ```http
 # 请求
-GET https://testnet-api.magape.io/buff?address=xxxx
---header 'X-Secret-Key:xxxx' 
+curl --location 'https://{url}/api/v1/nft/overallPerformance' \
+        --header 'signature: xxxx' \
+        --header 'requestId: 123123127' \
+        --header 'X-Access-Key: xxx' \
+        --header 'Content-Type: application/json' \
+        --data '
+            {
+                "address":"xxxx",
+                "networkId":56
+            }
+'
 
 # 返回
 {
-  "code":200,
+  "code": 200,
   "data": {
-    "address":"xxxx",
-    "buff":[
+    "enhancedAttrs": [
       {
-        "attr":"A1", 
-        "val":90, 
-      },
-      {
-        "attr":"A2",
-        "val":80,
+        "enhancedPercentage": "80",// nft enhanced percentage 80%
+        "enhancedVal": 16.84,// the value that calculated according to configuretion in magape platform
+        "id": 6,
+        "level": "Common", // nft level   
+        "name": "A6",// game define attribute
+        "nfName": "Mappy #106" // the NFT that provide this capability
       }
     ]
   },
-  "err":"" 
-  }
+  "message": "success"
+}
 ```
 **request**
 
-|  | 类型 | 位置 | 描述 | 是否必填 |
-| --- | --- | --- | --- | --- |
-| X-Secret-Key | string | header | magape的获取到的私钥 | 是 |
-| address | string | url | 玩家地址 | 是 |
+|  |位置 | 描述 | 是否必填 |
+| ---  | --- | --- | --- |
+| requestId                | header      | Unique traceId, cannot be repeated                 | Yes      |
+| signature                | header      | Signature information                              | Yes      |
+| X-Access-Key             | header      | Game merchants' access keys on the magape platform | Yes      |
+| NFTOverallPerformanceReq | body        | request   param                                    | Yes      |
+
+
+|           | 类型     | 描述                                   | Required |
+|-----------|--------|--------------------------------------|----------|
+| networkId | int    | networkId(97 bsc testnet,56 mainnet) | yes      |
+| address   | string | Gamer's address                      | yes      |
+
 
 **response**
 
-|  | 类型 | 描述 | 是否必填 |
-| --- | --- | --- | --- |
-| code | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
-| err | string | 错误信息，有则不用填 | 否 |
-| address | string | 玩家地址 | 是 |
-| buff | array | 增益 | 是 |
-| buff[0].attr | string | 属性名称 | 是 |
-| buff[0].val | int | 属性加成 | 是 |
+|                                     | 类型 | 描述                        | 是否必填 |
+|-------------------------------------| --- |---------------------------| --- |
+| code                                | int | 相应码,200 成功，401 未授权，500 错误 | 是 |
+| err                                 | string | 错误信息，有则不用填                | 否 |
+| address                             | string | 玩家地址                      | 是 |
+| enhancedAttrs                       | array | 增益                        | 是 |
+| enhancedAttrs[0].enhancedPercentage | string | 属性增幅比例                    | 是 |
+| enhancedAttrs[0].enhancedVal        | int | 属性加成值                     | 是 |
+| enhancedAttrs[0].id                 | int | 属性id                      | 是 |
+| enhancedAttrs[0].level                | int | nft 等级                    | 是 |
+| enhancedAttrs[0].name                | int | 游戏定义属性                    | 是 |
+| enhancedAttrs[0].nfName                | int | nft 名称                    | 是 |
+
 
 
 # 6、登入游戏
