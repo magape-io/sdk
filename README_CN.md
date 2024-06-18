@@ -50,12 +50,13 @@ sequenceDiagram
 #### 3.3.1.1、根据玩家钱包地址查询玩家支持导出的道具数量，支持导出的道具由游戏方决定，通过sdk上传到magape平台
 ```http
 # 请求
-POST https://game.com/exportableAsset?address=xxx
+POST https://game.com/assetStorage
 --header 'Content-Type: application/json' \
 --header 'signature:xxxx' 
 --data '{
 "reqId":'xxxx',
-"address':'xxxx'
+"address':'xxxx',
+"operate":'buy|sell'
 }'
 
 # 返回
@@ -77,7 +78,8 @@ POST https://game.com/exportableAsset?address=xxx
 | header | signature | header | 请求签名，游戏平台使用私钥解签 | 是 |
 | Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
-| address | string | body | 游戏地址 | 是 |
+| address | string | body | 游戏地址 | 否（当operate为buy时，查询的是平台能接受的最大购买数量，当operate为sell时，address要传，查询的是玩家目前可以卖的数量） |
+| operate | string | body | 操作类型，buy表示玩家购买游戏资产，sell表示玩家卖出游戏资产 | 是 |
 
 **response**
 
