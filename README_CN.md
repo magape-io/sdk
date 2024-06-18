@@ -154,7 +154,10 @@ POST https://game.com/checkStorage
 # 返回
 {
 "code":200,
-"data":"success",
+"data":{
+    "enough":true,
+    "remainStore":100
+ },
 "err":""
 }
 ```
@@ -166,7 +169,7 @@ POST https://game.com/checkStorage
 | signature | string | header | 请求签名，游戏平台使用私钥解签 | 是 |
 | Content-Type | string | header | 请求类型application/json | 是 |
 | reqId | string | body | 本次请求的唯一id | 是 |
-| address | string | body | 玩家地址 | 是 |
+| address | string | body | 玩家地址 | 否(查询游戏整体库存则不传，查询玩家库存的时候传玩家地址) |
 | assets | array | body | 受影响的资产 | 是 |
 | assets[].propId | string | body | 游戏道具id | 是 |
 | assets[].quantity | int | body | 要购买的数量 | 是 |
