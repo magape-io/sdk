@@ -18,7 +18,7 @@ sequenceDiagram
 		blockChain ->> magape: 7、监听合约事件
 		magape ->> 游戏厂商: 8、调用游戏厂商接口给玩家新增道具(接口3)
 ```
-接口1: - [上传可导出道具元数据http](HTTP_EN.md)uploadOrUpdateProp ｜ - [上传可导出道具元数据SDK](JAVA_SDK_EN.md)uploadOrUpdateProp
+接口1: - [上传可导出道具元数据http（uploadOrUpdateProp）](HTTP_EN.md) ｜ - [上传可导出道具元数据SDK（uploadOrUpdateProp）](JAVA_SDK_EN.md)
 
 接口2: - [检查游戏对应道具库存](#3315检查是否还有库存支持导入用于链数据到游戏道具功能)
 
@@ -39,7 +39,7 @@ sequenceDiagram
 		magape ->> blockChain: 6、调用合约
 		blockChain ->> magape: 7、监听合约事件
 ```
-接口1: - [上传可导出道具元数据](HTTP_EN.md#2-uploadorupdateprop)
+接口1: - [上传可导出道具元数据http（uploadOrUpdateProp）](HTTP_EN.md) ｜ - [上传可导出道具元数据SDK（uploadOrUpdateProp）](JAVA_SDK_EN.md)
 
 接口2: - [查询玩家可导出数量](#3311根据玩家钱包地址查询玩家支持导出的道具数量支持导出的道具由游戏方决定通过sdk上传到magape平台)
 
@@ -270,7 +270,7 @@ sequenceDiagram
 		玩家A ->> magape: 6、下架要卖的道具
 		magape ->> 游戏厂商: 7、调用游戏厂商接口给玩家恢复道具(接口3)
 ```
-接口1: - [上传可导出道具元数据](HTTP_EN.md#2-uploadorupdateprop)
+接口1: - [上传可导出道具元数据http（uploadOrUpdateProp）](HTTP_EN.md) ｜ - [上传可导出道具元数据SDK（uploadOrUpdateProp）](JAVA_SDK_EN.md)
 
 接口2: - [在游戏中删除玩家道具](#3312删除玩家道具用于游戏道具到链数据功能)
 
