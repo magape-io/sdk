@@ -234,7 +234,7 @@ POST https://game.com/increaseAsset
 
 ### 3.3.2、magape平台
 #### 3.3.2.1、上传游戏可导出道具元数据
-#### [https://github.com/magape-official/sdk/blob/main/java/HTTP_EN.md](https://github.com/magape-official/sdk/blob/main/java/HTTP_EN.md)（参考uploadOrUpdateProp方法）
+#### [https://github.com/magape-official/sdk/blob/main/java/HTTP_EN.md](https://github.com/magape-official/sdk/blob/main/HTTP_EN.md)（参考uploadOrUpdateProp方法）
 
 
 # 4、使用erc20代币进行玩家之间游戏道具买卖
