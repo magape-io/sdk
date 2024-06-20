@@ -1,7 +1,7 @@
 # 1、 游戏接入
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/901377/1716266050349-6290d18d-4403-4491-9529-34c563d92a26.png#averageHue=%23f2f2f2&clientId=u8d8f315f-fec8-4&from=paste&height=238&id=u5a183cb5&originHeight=476&originWidth=1316&originalType=binary&ratio=2&rotation=0&showTitle=false&size=98990&status=done&style=none&taskId=u6ddfb854-519e-429e-a44b-bc0d5eb41b7&title=&width=658)
 # 2、使用SDK和magape平台进行交互
-[https://github.com/magape-official/sdk/blob/main/java/JAVA_SDK_EN.md](https://github.com/magape-official/sdk/blob/main/java/JAVA_SDK_EN.md)
+[[https://github.com/magape-official/sdk/blob/main/java/JAVA_SDK_EN.md](https://github.com/magape-official/sdk/blob/main/JAVA_SDK_EN.md)]
 
 # 3、游戏道具与ERC20代币转换
 ## 3.1、erc20代币 -> 游戏道具
