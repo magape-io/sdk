@@ -18,7 +18,7 @@ sequenceDiagram
 		blockChain ->> magape: 7、监听合约事件
 		magape ->> 游戏厂商: 8、调用游戏厂商接口给玩家新增道具(接口3)
 ```
-接口1: - [上传可导出道具元数据](HTTP_EN.md#2-uploadorupdateprop)
+接口1: - [上传可导出道具元数据](HTTP_EN.md#2/api/v1/game/uploadOrUpdateProp)
 
 接口2: - [检查游戏对应道具库存](#3315检查是否还有库存支持导入用于链数据到游戏道具功能)
 
