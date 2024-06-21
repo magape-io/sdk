@@ -65,7 +65,6 @@ POST https://game.com/assetConfig
 --header 'signature:xxxx' 
 --data '{
 "reqId":'xxxx',
-"address':'xxxx',
 "operate":'buy|sell'
 }'
 
@@ -75,8 +74,7 @@ POST https://game.com/assetConfig
 "data":[ 
     {
       "id":"游戏道具id",
-      "maxBuy":10,
-      "maxSell":10
+      "value":10
     }
   ],
   "err":"" 
@@ -85,24 +83,22 @@ POST https://game.com/assetConfig
 
 **request**
 
-|              | 类型        | 位置     | 描述                                | 是否必填                                                                      |
-|--------------|-----------|--------|-----------------------------------|---------------------------------------------------------------------------|
-| header       | signature | header | 请求签名，游戏平台使用私钥解签                   | 是                                                                         |
-| Content-Type | string    | header | 请求类型application/json              | 是                                                                         |
-| reqId        | string    | body   | 本次请求的唯一id                         | 是                                                                         |
-| address      | string    | body   | 游戏地址                              | 否（当operate为buy时，查询的是平台能接受的最大购买数量，当operate为sell时，address要传，查询的是玩家目前可以卖的数量） |
-| operate      | string    | body   | 操作类型，buy表示玩家购买游戏资产，sell表示玩家卖出游戏资产 | 是                                                                         |
+|              | 类型        | 位置     | 描述                                | 是否必填 |
+|--------------|-----------|--------|-----------------------------------|------|
+| header       | signature | header | 请求签名，游戏平台使用私钥解签                   | 是    |
+| Content-Type | string    | header | 请求类型application/json              | 是    |
+| reqId        | string    | body   | 本次请求的唯一id                         | 是    |
+| operate      | string    | body   | 操作类型，buy表示玩家购买游戏资产，sell表示玩家卖出游戏资产 | 是    |
 
 **response**
 
-|                 | 类型     | 描述                        | 是否必填 |
-|-----------------|--------|---------------------------|------|
-| code            | int    | 相应码,200 成功，401 未授权，500 错误 | 是    |
-| err             | string | 错误信息，有则不用填                |
-| data            | array  | 玩家可导出的道具合集                | 是    |
-| data[0].id      | string | 游戏道具id                    | 是    |
-| data[0].maxBuy  | int    | 玩家最多可以买入多少个道具             | 是    |
-| data[0].maxSell | int    | 玩家最多可以卖出多少个道具             | 是    |
+|               | 类型     | 描述                        | 是否必填    |
+|---------------|--------|---------------------------|---------|
+| code          | int    | 相应码,200 成功，401 未授权，500 错误 | 是       |
+| err           | string | 错误信息，有则不用填                |
+| data          | array  | 玩家可导出的道具合集                | 是       |
+| data[0].id    | string | 游戏道具id                    | 是       |
+| data[0].value | int    | 玩家最多可以买入                  | 卖出多少个道具 | 是    |
 
 #### 3.3.1.2、删除玩家道具，用于游戏道具到链数据功能
 
@@ -296,7 +292,7 @@ POST https://game.com/increaseAsset
 | err  | string | 错误信息，有则不用填                | 否    |
 | data | string | "success" &#124; "fail    | 是    |
 
-####        
+####         
 
 ### 3.3.2、magape平台
 
@@ -404,7 +400,7 @@ POST https://game.com/nftNotify
 | err  | string | 错误信息，有则不用填                | 否    |
 | data | string | "success" &#124; "fail    | 是    |
 
-####        
+####         
 
 ### 5.1.2、magape
 
@@ -412,62 +408,65 @@ POST https://game.com/nftNotify
 
 ```json
 {
-  "code":200,
-  "data":{
-    "data":[
+  "code": 200,
+  "data": {
+    "data": [
       {
-        "attrList":[
+        "attrList": [
           {
-            "displayType":"boost_percentage", // 不需要处理，属于nft market市场展示
-            "traitType":"D2", // 属性名
-            "value":60 // 属性值，百分比
+            "displayType": "boost_percentage",
+            // 不需要处理，属于nft market市场展示
+            "traitType": "D2",
+            // 属性名
+            "value": 60
+            // 属性值，百分比
           },
           {
-            "displayType":"boost_percentage",
-            "traitType":"D1",
-            "value":20
+            "displayType": "boost_percentage",
+            "traitType": "D1",
+            "value": 20
           },
           {
-            "displayType":"boost_percentage",
-            "traitType":"D9",
-            "value":30
+            "displayType": "boost_percentage",
+            "traitType": "D9",
+            "value": 30
           },
           {
-            "displayType":"boost_percentage",
-            "traitType":"D5",
-            "value":40
+            "displayType": "boost_percentage",
+            "traitType": "D5",
+            "value": 40
           },
           {
-            "traitType":"Rank",
-            "value":"Epic"
+            "traitType": "Rank",
+            "value": "Epic"
           },
           {
-            "traitType":"Ape Type",
-            "value":"Sky"
+            "traitType": "Ape Type",
+            "value": "Sky"
           }
         ],
-        "attrs":"[{\"display_type\":\"boost_percentage\",\"trait_type\":\"D2\",\"value\":60},{\"display_type\":\"boost_percentage\",\"trait_type\":\"D1\",\"value\":20},{\"display_type\":\"boost_percentage\",\"trait_type\":\"D9\",\"value\":30},{\"display_type\":\"boost_percentage\",\"trait_type\":\"D5\",\"value\":40},{\"trait_type\":\"Rank\",\"value\":\"Epic\"},{\"trait_type\":\"Ape Type\",\"value\":\"Sky\"}]",
-        "category":"Sky",
-        "createTime":1714109254000,
-        "erc721ContractAddress":"0x3FB236F17054c24DB20FDf6135Ce334DE7451928",
-        "fromAddress":"0x0000000000000000000000000000000000000000",
-        "imageUrl":"https://testnet-api.magape.io/ipfs/QmeSRVY7786EZTEQivowaPakjjSPg3BRyMdWk8dHWroDFL",
-        "imgCid":"ipfs://QmeSRVY7786EZTEQivowaPakjjSPg3BRyMdWk8dHWroDFL",
-        "level":"Epic",
-        "name":"Mappy #306",
-        "nftCidUrl":"https://testnet-api.magape.io/ipns/null",
-        "status":2,
-        "toAddress":"0x4d11df920e0e48c7e132e5a9754c7e754cd6ebfb",
-        "tokenId":306
+        "attrs": "[{\"display_type\":\"boost_percentage\",\"trait_type\":\"D2\",\"value\":60},{\"display_type\":\"boost_percentage\",\"trait_type\":\"D1\",\"value\":20},{\"display_type\":\"boost_percentage\",\"trait_type\":\"D9\",\"value\":30},{\"display_type\":\"boost_percentage\",\"trait_type\":\"D5\",\"value\":40},{\"trait_type\":\"Rank\",\"value\":\"Epic\"},{\"trait_type\":\"Ape Type\",\"value\":\"Sky\"}]",
+        "category": "Sky",
+        "createTime": 1714109254000,
+        "erc721ContractAddress": "0x3FB236F17054c24DB20FDf6135Ce334DE7451928",
+        "fromAddress": "0x0000000000000000000000000000000000000000",
+        "imageUrl": "https://testnet-api.magape.io/ipfs/QmeSRVY7786EZTEQivowaPakjjSPg3BRyMdWk8dHWroDFL",
+        "imgCid": "ipfs://QmeSRVY7786EZTEQivowaPakjjSPg3BRyMdWk8dHWroDFL",
+        "level": "Epic",
+        "name": "Mappy #306",
+        "nftCidUrl": "https://testnet-api.magape.io/ipns/null",
+        "status": 2,
+        "toAddress": "0x4d11df920e0e48c7e132e5a9754c7e754cd6ebfb",
+        "tokenId": 306
       }
     ],
-    "hasNext":true,
-    "pageNo":1,
-    "pageSize":20,
-    "totalPage":2,
-    "totalRecord":38
+    "hasNext": true,
+    "pageNo": 1,
+    "pageSize": 20,
+    "totalPage": 2,
+    "totalRecord": 38
   },
-  "message":"success"
+  "message": "success"
 }
 
 ```
@@ -481,8 +480,12 @@ InputStream inputStream = request.getInputStream();
 ByteArrayOutputStream output = new ByteArrayOutputStream();
 byte[] buffer = new byte[1024];
 int n;
-while(-1!=(n =inputStream.read(buffer))){
-        output.write(buffer, 0,n);
+while(-1!=(n =inputStream.
+
+read(buffer))){
+        output.
+
+write(buffer, 0,n);
 }
 String payload = output.toString(StandardCharsets.UTF_8);
 String sigHeader = request.getHeader("signature");
@@ -494,11 +497,17 @@ KeyFactory keyFactory = KeyFactory.getInstance("Ed25519");
 PublicKey accessKey = keyFactory.generatePublic(keySpec);
 
 Signature signDecode = Signature.getInstance("Ed25519");
-signDecode.initVerify(accessKey);
-signDecode.update(source.getBytes(StandardCharsets.UTF_8));
+signDecode.
+
+initVerify(accessKey);
+signDecode.
+
+update(source.getBytes(StandardCharsets.UTF_8));
 boolean verifyResult = signDecode.verify(Base64.decodeBase64(rsaData));
 
-System.out.println("Verify Result: "+verifyResult);
+System.out.
+
+println("Verify Result: "+verifyResult);
 ```
 
 # 6、NFT在游戏中的影响
