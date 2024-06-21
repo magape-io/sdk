@@ -157,21 +157,24 @@ POST https://game.com/queryStorage
     "reqId":"xxx",
     "address": xxxx,
     "operate": "buy | sell",
-    "assets":[
-      {
-      "propId": "游戏道具id", 
-      "quantity": 10
-      }
-    ]
+    "queryIds": [1, 2, 3]
 }'
-
 # 返回
 {
 "code":200,
-"data":{
-    "remainStore":100
- },
-"err":""
+"data":[
+    {
+        "id": 1,
+        "name": "道具1",
+        "value": 100
+    },
+    {
+        "id": 2,
+        "name": "道具2",
+        "value": 200
+    }
+],
+"msg":""
 }
 ```
 
@@ -184,8 +187,7 @@ POST https://game.com/queryStorage
 | reqId             | string | body   | 本次请求的唯一id                                             | 是                                                     |
 | address           | string | body   | 玩家地址                                                  | 否(operate为buy，查询游戏整体库存则不传，operate为sell查询玩家库存的时候传玩家地址) |
 | operate           | string | body   | 操作描述（buy or sell），buy表示查询可以购买的库存数量，sell表示查询玩家可以卖的库存数量 | 是                                                     |
-| assets[].propId   | string | body   | 游戏道具id                                                | 是                                                     |
-| assets[].quantity | int    | body   | 要购买的数量                                                | 是                                                     |
+| queryIds   | string[] | body   | 游戏道具id                                                | 否                                                     | 要查询的道具ID数组,如果不传则查询所有道具
 
 **response**
 
@@ -193,8 +195,10 @@ POST https://game.com/queryStorage
 |------------------|--------|---------------------------|------|
 | code             | int    | 相应码,200 成功，401 未授权，500 错误 | 是    |
 | err              | string | 错误信息，有则不用填                | 否    |
-| data             | object | 返回对象                      | 是    |
-| data.remainStore | number | 剩余库存数量                    | 是    |
+| data             | object[] | 返回对象                      | 是    |
+| data[].id | string | 道具id                    | 是    |
+| data[].name | string | 道具名称                    | 是    |
+| data[].value | string | 剩余库存数量(operate为buy)或玩家拥有数量(operate为sell)                    | 是    |
 
 #### 3.3.1.4、检查是否还有库存支持导入，用于链数据到游戏道具功能
 
