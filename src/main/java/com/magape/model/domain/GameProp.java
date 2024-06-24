@@ -10,8 +10,6 @@ public class GameProp {
     public static final Integer APE_LINK = 1;
     // 道具类型 只能用户ARENA格斗场，必须要传supportCurrency
     public static final Integer ARENA = 2;
-    // 道具类型 只能用于P2P交易，supportCurrency不传
-    public static final Integer P2P = 3;
 
     // 道具为arena时支持的货币类型，只支持格斗游戏的货币
     public static final Integer CURRENCY_ARENA_ONLY = 1;
