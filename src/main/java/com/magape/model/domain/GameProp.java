@@ -6,21 +6,27 @@ package com.magape.model.domain;
 
 public class GameProp {
 
+    // 道具类型 可以导出导出型,supportCurrency不传
+    public static final Integer APE_LINK = 1;
+    // 道具类型 只能用户ARENA格斗场，必须要传supportCurrency
+    public static final Integer ARENA = 2;
+    // 道具类型 只能用于P2P交易，supportCurrency不传
+    public static final Integer P2P = 3;
 
-    public static final Integer BLOCK_CHAIN = 1;
-    public static final Integer FIGHTING_ARENA = 2;
+    // 道具为arena时支持的货币类型，只支持格斗游戏的货币
+    public static final Integer CURRENCY_ARENA_ONLY = 1;
+    // 道具为arena支持的货币类型，只支持MAGAPE游戏的货币
+    public static final Integer CURRENCY_MAGAPE_ONLY = 2;
+    // 道具为arena支持的货币类型，支持格斗游戏和MAGAPE游戏的货币
+    public static final Integer CURRENCY_BOTH_ARENA_MAGAPE = 3;
 
     // 道具在游戏中的id
     private String id;
 
-    // 最多可以换多少个道具变成mac。
-    private Integer maxSell;
-
-    // 最多用mac购买多少个道具。
-    private Integer maxBuy;
-
     // 道具可以换多少个mac: 0.0001 - 1000
     private Double cost;
+
+    private Integer supportCurrency;
 
     // 类型
     private Integer type;
@@ -37,16 +43,6 @@ public class GameProp {
 
     public GameProp id(String id) {
         this.id = id;
-        return this;
-    }
-
-    public GameProp maxSell(Integer maxSell) {
-        this.maxSell = maxSell;
-        return this;
-    }
-
-    public GameProp maxBuy(Integer maxBuy) {
-        this.maxBuy = maxBuy;
         return this;
     }
 
@@ -70,9 +66,22 @@ public class GameProp {
         return this;
     }
 
+    public GameProp supportCurrency(Integer supportCurrency) {
+        this.supportCurrency = supportCurrency;
+        return this;
+    }
+
     public GameProp description(String description) {
         this.description = description;
         return this;
+    }
+
+    public Integer getSupportCurrency() {
+        return supportCurrency;
+    }
+
+    public void setSupportCurrency(Integer supportCurrency) {
+        this.supportCurrency = supportCurrency;
     }
 
     public static GameProp builder() {
@@ -125,22 +134,6 @@ public class GameProp {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getMaxSell() {
-        return maxSell;
-    }
-
-    public void setMaxSell(Integer maxSell) {
-        this.maxSell = maxSell;
-    }
-
-    public Integer getMaxBuy() {
-        return maxBuy;
-    }
-
-    public void setMaxBuy(Integer maxBuy) {
-        this.maxBuy = maxBuy;
     }
 
     public static class Attr {
