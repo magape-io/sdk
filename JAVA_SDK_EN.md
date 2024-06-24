@@ -5,7 +5,7 @@
 <dependency>
     <groupId>io.github.magape-official</groupId>
     <artifactId>magape-java-sdk</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.8</version>
 </dependency>
 ```
 
@@ -162,9 +162,7 @@ Upload or update game props
 
 |             | type   | Descriptions                                                                                                                                                                                                                                                      | Required |
 |-------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| id          | string | The identification code for game items must be unique for each item to be identified. This ID will be used for all imports and exports.                                                                                                                           | yes      |
-| maxSell     | int    | How many items can the entire game sell at most                                                                                                                                                                                                                   | yes      |
-| maxBuy      | int    | How many items can I buy at most through Mac                                                                                                                                                                                                                      | yes      |
+| id          | string | The identification code for game items must be unique for each item to be identified. This ID will be used for all imports and exports.                                                                                                                           | yes      | | yes      |
 | cost        | double | The number of tokens that this item may be worth. If it is a scope item, then each item is worth a token quantity. Appliances should be priced fairly in order to be accepted by our ecosystem.                                                                   | yes      |
 | type        | int    | 1:Items that can be chained、2: arean items                                                                                                                                                                                                                        | yes      |
 | image       | string | The graphics of the project to be exported. Game developers should host their own images to achieve renewability. Our recommended monitor size is 300 x 300.                                                                                                      | yes      |
@@ -186,7 +184,14 @@ public void test() throws Exception {
     MagApe.live = false;
     MagApe.accessKey = "apply from magape";
     MagApe.secretKey = "apply from magape";
-    boolean result = Game.uploadOrUpdateProp(String.valueOf(System.currentTimeMillis()), List.of(GameProp.builder().id("9").name("hehe").cost(10d).type(1).maxBuy(100).maxSell(10).image("http://hehe")));
+    
+    // upload arena prop
+    boolean result = Game.uploadOrUpdateProp("31312314", List.of(GameProp.builder().id("34234232452").cost(100d).name("test").type(GameProp.ARENA).supportCurrency(GameProp.CURRENCY_MAGAPE_ONLY).description("test").image("test.png")));
+    System.out.println(result);
+    
+    // upload ape_link prop
+    result = Game.uploadOrUpdateProp("31312314", List.of(GameProp.builder().id("34234232452").cost(100d).name("test").type(GameProp.APE_LINK).description("test").image("test.png")));
+
     System.out.println(result);
 }
 ```

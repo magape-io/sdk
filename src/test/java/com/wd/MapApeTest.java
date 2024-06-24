@@ -32,7 +32,7 @@ public class MapApeTest {
 ////        NFTOverallPerformance performance = Wallet.performance(String.valueOf(System.currentTimeMillis()), NFTOverallPerformanceReq.build().address("0x4D11dF920E0E48c7E132e5a9754C7e754Cd6EBFB").networkId(97));
 ////        System.out.println(performance);
 
-        boolean b = Game.uploadOrUpdateProp("31312314", List.of(GameProp.builder().id("34234232452").cost(100d).name("test").type(GameProp.ARENA).description("test").image("test.png")));
+        boolean b = Game.uploadOrUpdateProp("31312314", List.of(GameProp.builder().id("34234232452").cost(100d).name("test").type(GameProp.ARENA).supportCurrency(GameProp.CURRENCY_MAGAPE_ONLY).description("test").image("test.png")));
         System.out.println(b);
     }
 

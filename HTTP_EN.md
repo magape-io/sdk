@@ -4,8 +4,11 @@
 | TestNet | https://testnet-api.magape.io |
 
 # signature
+
 ## generate signature
+
 java
+
 ```java
 /**
  *@param data need sign data
@@ -27,7 +30,9 @@ public static String digitalSign(byte[] data, String pKey) {
     }
 }
 ```
+
 js
+
 ```js
 const crypto = require('crypto');
 
@@ -50,24 +55,28 @@ function digitalSign(data, pKey) {
     }
 }
 ```
+
 go
+
 ```go
 import (
-    "crypto/ed25519"
-    "encoding/base64"
+"crypto/ed25519"
+"encoding/base64"
 )
 
 func digitalSign(data []byte, pKey string) (string, error) {
-    privateKeyBytes, err := base64.StdEncoding.DecodeString(pKey)
-    if err != nil {
-        return "", err
-    }
+privateKeyBytes, err := base64.StdEncoding.DecodeString(pKey)
+if err != nil {
+return "", err
+}
 
-    signature := ed25519.Sign(ed25519.PrivateKey(privateKeyBytes), data)
-    return base64.StdEncoding.EncodeToString(signature), nil
+signature := ed25519.Sign(ed25519.PrivateKey(privateKeyBytes), data)
+return base64.StdEncoding.EncodeToString(signature), nil
 }
 ```
+
 c#
+
 ```c#
 using System;
 using System.Security.Cryptography;
@@ -94,6 +103,7 @@ public static string DigitalSign(byte[] data, string pKey)
 ```
 
 ## verify signature
+
 ```java
 /** Verify signature [access Key verification]
  * @param source Data to be decrypted
@@ -118,42 +128,47 @@ public static boolean signVerify(String source, String rsaData, String accessKey
     return false;
 }
 ```
+
 js
+
 ```js
 const crypto = require('crypto');
 
 function signVerify(source, rsaData, accessKey) {
-  try {
-    const publicKey = crypto.createPublicKey({
-      key: Buffer.from(accessKey, 'base64'),
-      format: 'der',
-      type: 'ed25519'
-    });
+    try {
+        const publicKey = crypto.createPublicKey({
+            key: Buffer.from(accessKey, 'base64'),
+            format: 'der',
+            type: 'ed25519'
+        });
 
-    const verify = crypto.createVerify('ed25519');
-    verify.update(source);
+        const verify = crypto.createVerify('ed25519');
+        verify.update(source);
 
-    return verify.verify(publicKey, Buffer.from(rsaData, 'base64'));
-  } catch (err) {
-    console.error(err);
-    return false;
-  }
+        return verify.verify(publicKey, Buffer.from(rsaData, 'base64'));
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
 }
 ```
+
 ```go
 import (
-    "crypto/ed25519"
-    "encoding/base64"
+"crypto/ed25519"
+"encoding/base64"
 )
 
 func signVerify(source, rsaData, accessKey string) bool {
-    accessKeyBytes, _ := base64.StdEncoding.DecodeString(accessKey)
-    signature, _ := base64.StdEncoding.DecodeString(rsaData)
+accessKeyBytes, _ := base64.StdEncoding.DecodeString(accessKey)
+signature, _ := base64.StdEncoding.DecodeString(rsaData)
 
-    return ed25519.Verify(ed25519.PublicKey(accessKeyBytes), []byte(source), signature)
+return ed25519.Verify(ed25519.PublicKey(accessKeyBytes), []byte(source), signature)
 }
 ```
+
 c#
+
 ```c#
 
 using System;
@@ -192,7 +207,7 @@ Get all NFTs in the wallet
 |--------------|--------------|----------------------------------------------------------------------------------------|----------|
 | requestId    | header       | Unique traceId, cannot be repeated                                                     | Yes      |
 | signature    | header       | Signature information                                                                  | Yes      |
-| X-Access-Key | header       | Game merchants' access keys(accessKey) on the magape platform                                   | Yes      |
+| X-Access-Key | header       | Game merchants' access keys(accessKey) on the magape platform                          | Yes      |
 | propPageReq  | body         | Query all NFTs of players on the magape platform, including a series of query criteria | Yes      |
 
 ## propPageReq
@@ -277,21 +292,20 @@ they are reasonable. Only after the review is approved can MAC redemption be car
 |--------------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
 | requestId    | header       | Unique traceId, cannot be repeated                                                                                                                                 | Yes      |
 | signature    | header       | Signature information                                                                                                                                              | Yes      |
-| X-Access-Key | header       | Game merchants' access keys(accessKey) on the magape platform                                                                                                                   | Yes      |
+| X-Access-Key | header       | Game merchants' access keys(accessKey) on the magape platform                                                                                                      | Yes      |
 | data         | body         | The list of all game items to be exported has no limit on the number of items that can be imported. Please refer to the following text for the format of the data. | Yes      |
 
 ## 2.2、Data
 
-|             | Descriptions | type                                                                                                                                                                                                                                                              | Required |
-|-------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| id          | string       | The identification code for game items must be unique for each item to be identified. This ID will be used for all imports and exports.                                                                                                                           | yes      |
-| maxSell     | int          | How many items can the entire game sell at most                                                                                                                                                                                                                   | yes      |
-| maxBuy      | int          | How many items can I buy at most through Mac                                                                                                                                                                                                                      | yes      |
-| cost        | double       | The number of tokens that this item may be worth. If it is a scope item, then each item is worth a token quantity. Appliances should be priced fairly in order to be accepted by our ecosystem.                                                                   | yes      |
-| type        | int          | 1:Items that can be chained、2: arean items                                                                                                                                                                                                                        | yes      |
-| image       | string       | The graphics of the project to be exported. Game developers should host their own images to achieve renewability. Our recommended monitor size is 300 x 300.                                                                                                      | yes      |
-| name        | string       | The name should be unique and clearly specified. If two names are found, the latter one takes effect. An example is hierarchical, where the higher the level, the more difficult it is to achieve, and the corresponding increase in export value should be made. | yes      |
-| description | string       | A description of an item, which can describe its abilities or simply tell a story about the item.                                                                                                                                                                 | NO       |
+|                 | Descriptions | type                                                                                                                                                                                                                                                              | Required                                                            |
+|-----------------|--------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
+| id              | string       | The identification code for game items must be unique for each item to be identified. This ID will be used for all imports and exports.                                                                                                                           | yes                                                                 |
+| cost            | double       | The number of tokens that this item may be worth. If it is a scope item, then each item is worth a token quantity. Appliances should be priced fairly in order to be accepted by our ecosystem.                                                                   | yes                                                                 |
+| type            | int          | 1:Items that can be chained、2: arean items                                                                                                                                                                                                                        | yes                                                                 |
+| supportCurrency | int          | 1:magape platfrom coin 2: arena game coin 3: both magape and arena coin                                                                                                                                                                                           | false(Type 1 does not need to be passed, type 2 needs to be passed) |
+| image           | string       | The graphics of the project to be exported. Game developers should host their own images to achieve renewability. Our recommended monitor size is 300 x 300.                                                                                                      | yes                                                                 |
+| name            | string       | The name should be unique and clearly specified. If two names are found, the latter one takes effect. An example is hierarchical, where the higher the level, the more difficult it is to achieve, and the corresponding increase in export value should be made. | yes                                                                 |
+| description     | string       | A description of an item, which can describe its abilities or simply tell a story about the item.                                                                                                                                                                 | NO                                                                  |
 
 ## 2.3、Return data
 
@@ -306,6 +320,7 @@ they are reasonable. Only after the review is approved can MAC redemption be car
 ## 2.4、Sample code
 
 ```http
+-- upload ape link prop
 curl --location 'https://url/api/v1/game/uploadOrUpdateProp' \
         --header 'signature: xxxx' \
         --header 'requestId: 123123127' \
@@ -313,11 +328,27 @@ curl --location 'https://url/api/v1/game/uploadOrUpdateProp' \
         --header 'Content-Type: application/json' \
         --data '[
             {
-                "maxSell":1000,
-                "maxBuy":1000,
                 "cost":0.1,
                 "id":"6",
                 "type":1,
+                "image":"https://media.istockphoto.com/id/182462356/photo/speedometer-and-tachometer.jpg?s=1024x1024&w=is&k=20&c=Kb9uDKKfcP1Wklnx08G_TIp5xum0rcPDK7GlnqBRdD0=",
+                "name":"gogoCar"
+            }
+        ]'
+        
+        
+-- upload arena prop
+curl --location 'https://url/api/v1/game/uploadOrUpdateProp' \
+        --header 'signature: xxxx' \
+        --header 'requestId: 123123127' \
+        --header 'X-Access-Key: xxx' \
+        --header 'Content-Type: application/json' \
+        --data '[
+            {
+                "cost":0.1,
+                "id":"6",
+                "type":2,
+                "supportCurrency":1,
                 "image":"https://media.istockphoto.com/id/182462356/photo/speedometer-and-tachometer.jpg?s=1024x1024&w=is&k=20&c=Kb9uDKKfcP1Wklnx08G_TIp5xum0rcPDK7GlnqBRdD0=",
                 "name":"gogoCar"
             }
