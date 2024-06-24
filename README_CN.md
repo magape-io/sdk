@@ -61,6 +61,7 @@ sequenceDiagram
 ### 3.3.1、游戏方
 
 #### 3.3.1.1、查询玩家可以导入导出的配置(可选)
+
 如果没有提供，则默认在magape页面不展示导入导出限制数量
 
 ```http
@@ -185,25 +186,25 @@ POST https://game.com/queryStorage
 
 **request**
 
-|                   | 类型     | 位置     | 描述                                                    | 是否必填                                                  |
-|-------------------|--------|--------|-------------------------------------------------------|-------------------------------------------------------|
-| signature         | string | header | 请求签名，游戏平台使用私钥解签                                       | 是                                                     |
-| Content-Type      | string | header | 请求类型application/json                                  | 是                                                     |
-| reqId             | string | body   | 本次请求的唯一id                                             | 是                                                     |
-| address           | string | body   | 玩家地址                                                  | 否(operate为buy，查询游戏整体库存则不传，operate为sell查询玩家库存的时候传玩家地址) |
-| operate           | string | body   | 操作描述（buy or sell），buy表示查询可以购买的库存数量，sell表示查询玩家可以卖的库存数量 | 是                                                     |
-| queryIds   | string[] | body   | 游戏道具id                                                | 否                                                     | 要查询的道具ID数组,如果不传则查询所有道具
+|              | 类型       | 位置     | 描述                                                    | 是否必填 |
+|--------------|----------|--------|-------------------------------------------------------|------|
+| signature    | string   | header | 请求签名，游戏平台使用私钥解签                                       | 是    |
+| Content-Type | string   | header | 请求类型application/json                                  | 是    |
+| reqId        | string   | body   | 本次请求的唯一id                                             | 是    |
+| address      | string   | body   | 玩家地址                                                  | 是    |
+| operate      | string   | body   | 操作描述（buy or sell），buy表示查询可以购买的库存数量，sell表示查询玩家可以卖的库存数量 | 是    |
+| queryIds     | string[] | body   | 游戏道具id                                                | 否    | 要查询的道具ID数组,如果不传则查询所有道具
 
 **response**
 
-|                  | 类型     | 描述                        | 是否必填 |
-|------------------|--------|---------------------------|------|
-| code             | int    | 相应码,200 成功，401 未授权，500 错误 | 是    |
-| err              | string | 错误信息，有则不用填                | 否    |
-| data             | object[] | 返回对象                      | 是    |
-| data[].id | string | 道具id                    | 是    |
-| data[].name | string | 道具名称                    | 是    |
-| data[].value | string | 剩余库存数量(operate为buy)或玩家拥有数量(operate为sell)                    | 是    |
+|              | 类型       | 描述                                       | 是否必填 |
+|--------------|----------|------------------------------------------|------|
+| code         | int      | 相应码,200 成功，401 未授权，500 错误                | 是    |
+| err          | string   | 错误信息，有则不用填                               | 否    |
+| data         | object[] | 返回对象                                     | 是    |
+| data[].id    | string   | 道具id                                     | 是    |
+| data[].name  | string   | 道具名称                                     | 是    |
+| data[].value | string   | 剩余库存数量(operate为buy)或玩家拥有数量(operate为sell) | 是    |
 
 #### 3.3.1.4、检查是否还有库存支持导入
 
@@ -236,15 +237,15 @@ POST https://game.com/checkEnough
 
 **request**
 
-|                   | 类型     | 位置     | 描述                                                    | 是否必填                                                  |
-|-------------------|--------|--------|-------------------------------------------------------|-------------------------------------------------------|
-| signature         | string | header | 请求签名，游戏平台使用私钥解签                                       | 是                                                     |
-| Content-Type      | string | header | 请求类型application/json                                  | 是                                                     |
-| reqId             | string | body   | 本次请求的唯一id                                             | 是                                                     |
-| address           | string | body   | 玩家地址                                                  | 否(operate为buy，查询游戏整体库存则不传，operate为sell查询玩家库存的时候传玩家地址) |
-| operate           | string | body   | 操作描述（buy or sell），buy表示查询可以购买的库存数量，sell表示查询玩家可以卖的库存数量 | 是                                                     |
-| assets[].propId   | string | body   | 游戏道具id                                                | 是                                                     |
-| assets[].quantity | int    | body   | 要购买的数量                                                | 是                                                     |
+|                   | 类型     | 位置     | 描述                                                    | 是否必填 |
+|-------------------|--------|--------|-------------------------------------------------------|------|
+| signature         | string | header | 请求签名，游戏平台使用私钥解签                                       | 是    |
+| Content-Type      | string | header | 请求类型application/json                                  | 是    |
+| reqId             | string | body   | 本次请求的唯一id                                             | 是    |
+| address           | string | body   | 玩家地址                                                  | 是    |
+| operate           | string | body   | 操作描述（buy or sell），buy表示查询可以购买的库存数量，sell表示查询玩家可以卖的库存数量 | 是    |
+| assets[].propId   | string | body   | 游戏道具id                                                | 是    |
+| assets[].quantity | int    | body   | 要购买的数量                                                | 是    |
 
 **response**
 
@@ -301,7 +302,7 @@ POST https://game.com/increaseAsset
 | err  | string | 错误信息，有则不用填                | 否    |
 | data | string | "success" &#124; "fail    | 是    |
 
-####         
+####          
 
 ### 3.3.2、magape平台
 
@@ -409,7 +410,7 @@ POST https://game.com/nftNotify
 | err  | string | 错误信息，有则不用填                | 否    |
 | data | string | "success" &#124; "fail    | 是    |
 
-####         
+####          
 
 ### 5.1.2、magape
 
@@ -625,17 +626,17 @@ curl --location 'https://{url}/api/v1/nft/overallPerformance' \
 
 **request**
 
-|                          | 位置     | 描述                                                 | 是否必填 |
-|--------------------------|--------|----------------------------------------------------|------|
-| requestId                | header | Unique traceId, cannot be repeated                 | Yes  |
-| signature                | header | Signature information                              | Yes  |
-| X-Access-Key             | header | Game merchants' access keys on the magape platform | Yes  |
-| NFTOverallPerformanceReq | body   | request   param                                    | Yes  |
+|                          | 位置     | 描述                 | 是否必填 |
+|--------------------------|--------|--------------------|------|
+| requestId                | header | 唯一的traceId，不能重复    | Yes  |
+| signature                | header | 签名信息               | Yes  |
+| X-Access-Key             | header | magape平台上游戏厂商的访问密钥 | Yes  |
+| NFTOverallPerformanceReq | body   | 请求参数               | Yes  |
 
-|           | 类型     | 描述                                   | Required |
-|-----------|--------|--------------------------------------|----------|
-| networkId | int    | networkId(97 bsc testnet,56 mainnet) | yes      |
-| address   | string | Gamer's address                      | yes      |
+|           | 类型     | 描述                             | Required |
+|-----------|--------|--------------------------------|----------|
+| networkId | int    | 链id(97 bsc testnet,56 mainnet) | yes      |
+| address   | string | 玩家地址                           | yes      |
 
 **response**
 
