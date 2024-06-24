@@ -8,7 +8,7 @@
 
 # 3、游戏道具与ERC20代币转换
 
-## 3.1、erc20代币 -> 游戏道具
+## 3.1、erc20代币 -> 游戏道具（导入）
 
 ```mermaid
 sequenceDiagram
@@ -17,20 +17,24 @@ sequenceDiagram
     participant 玩家
     		游戏厂商 ->> magape: 1、通过sdk上传支持导出的道具列表(接口1)
 		magape -> magape: 2、审核
-		玩家 ->> magape: 4、执行导入
-		magape ->> 游戏厂商: 5、检查对应道具是否有足够库存支持导入(接口2)
+		玩家 ->> magape: 3、执行导入
+		magape ->> 游戏厂商: 4、查询可以导出的道具列表以及玩家个人导入限制，可选(接口2)
+		magape ->> 游戏厂商: 5、检查玩家是否还有余额可以导入(case:特殊道具每人只能购买一次)(接口3)
+		游戏厂商 ->> magape: 5、返回结果，库存足够，可以执行导入
 		magape ->> blockChain: 6、调用合约
 		blockChain ->> magape: 7、监听合约事件
-		magape ->> 游戏厂商: 8、调用游戏厂商接口给玩家新增道具(接口3)
+		magape ->> 游戏厂商: 8、调用游戏厂商接口给玩家新增道具(接口4)
 ```
 
 接口1: - [上传可导出道具元数据http（uploadOrUpdateProp）](HTTP_EN.md) ｜ - [上传可导出道具元数据SDK（uploadOrUpdateProp）](JAVA_SDK_EN.md)
 
-接口2: - [检查游戏对应道具库存](#3315检查是否还有库存支持导入用于链数据到游戏道具功能)
+接口2: - [查询可以导出的道具列表及个人限制](#3311查询玩家可以导入导出的配置可选)
 
-接口3: - [在游戏中新增玩家道具](#3316新增玩家道具用于链数据游戏道具功能)
+接口3: - [检查游戏对应道具库存](#3314检查是否还有库存支持导入)
 
-## 3.2、游戏道具 -> erc20代币
+接口4: - [在游戏中新增玩家道具](#3315新增玩家道具)
+
+## 3.2、游戏道具 -> erc20代币（导出）
 
 ```mermaid
 sequenceDiagram
@@ -39,7 +43,7 @@ sequenceDiagram
     participant 玩家
     		游戏厂商 ->> magape: 1、通过sdk上传支持导出的道具列表(接口1)
 		magape -> magape: 2、审核
-		玩家 ->> magape: 3、在magape市场可以看到自己在不同游戏支持导入导出的道具(接口2)
+		玩家 ->> magape: 3、在magape市场可以看到自己在不同游戏支持导入导出的道具以及限制(接口2)
 		玩家 ->> magape: 4、执行导出
 		magape ->> 游戏厂商: 5、调用游戏厂商接口删除玩家道具(接口3)
 		magape ->> blockChain: 6、调用合约
@@ -48,15 +52,16 @@ sequenceDiagram
 
 接口1: - [上传可导出道具元数据http（uploadOrUpdateProp）](HTTP_EN.md) ｜ - [上传可导出道具元数据SDK（uploadOrUpdateProp）](JAVA_SDK_EN.md)
 
-接口2: - [查询玩家可导出数量](#3311根据玩家钱包地址查询玩家支持导出的道具数量支持导出的道具由游戏方决定通过sdk上传到magape平台)
+接口2: - [查询玩家可导出数量](#3311查询可以导入导出玩家级别的配置)
 
-接口3: - [删除玩家道具](#3314删除玩家道具用于游戏道具到链数据功能)
+接口3: - [删除玩家道具](#3312删除玩家道具)
 
 ## 3.3、需要提供的接口
 
 ### 3.3.1、游戏方
 
-#### 3.3.1.1、根据玩家钱包地址查询玩家支持导出的道具数量，支持导出的道具由游戏方决定，通过sdk上传到magape平台
+#### 3.3.1.1、查询玩家可以导入导出的配置(可选)
+如果没有提供，则默认在magape页面不展示导入导出限制数量
 
 ```http
 # 请求
@@ -83,12 +88,12 @@ POST https://game.com/assetConfig
 
 **request**
 
-|              | 类型        | 位置     | 描述                                | 是否必填 |
-|--------------|-----------|--------|-----------------------------------|------|
-| header       | signature | header | 请求签名，游戏平台使用私钥解签                   | 是    |
-| Content-Type | string    | header | 请求类型application/json              | 是    |
-| reqId        | string    | body   | 本次请求的唯一id                         | 是    |
-| operate      | string    | body   | 操作类型，buy表示玩家购买游戏资产，sell表示玩家卖出游戏资产 | 是    |
+|              | 类型        | 位置     | 描述                                    | 是否必填 |
+|--------------|-----------|--------|---------------------------------------|------|
+| header       | signature | header | 请求签名，游戏平台使用私钥解签                       | 是    |
+| Content-Type | string    | header | 请求类型application/json                  | 是    |
+| reqId        | string    | body   | 本次请求的唯一id                             | 是    |
+| operate      | string    | body   | 操作类型，buy表示玩家限制购买游戏资产，sell表示玩家限制卖出游戏资产 | 是    |
 
 **response**
 
@@ -100,7 +105,7 @@ POST https://game.com/assetConfig
 | data[0].id    | string | 游戏道具id                    | 是       |
 | data[0].value | int    | 玩家最多可以买入                  | 卖出多少个道具 | 是    |
 
-#### 3.3.1.2、删除玩家道具，用于游戏道具到链数据功能
+#### 3.3.1.2、删除玩家道具
 
 ```http
 # 请求
@@ -146,7 +151,7 @@ POST https://game.com/deleteAsset
 | err  | string | 错误信息，有则不用填                | 否    |
 | data | string | "success" &#124; "fail    | 是    |
 
-#### 3.3.1.3、查询库存，用于链数据到游戏道具功能
+#### 3.3.1.3、查询玩家游戏道具库存
 
 ```http
 # 请求
@@ -200,7 +205,7 @@ POST https://game.com/queryStorage
 | data[].name | string | 道具名称                    | 是    |
 | data[].value | string | 剩余库存数量(operate为buy)或玩家拥有数量(operate为sell)                    | 是    |
 
-#### 3.3.1.4、检查是否还有库存支持导入，用于链数据到游戏道具功能
+#### 3.3.1.4、检查是否还有库存支持导入
 
 ```http
 # 请求
@@ -250,7 +255,7 @@ POST https://game.com/checkEnough
 | data        | object | 返回对象                      | 是    |
 | data.enough | bool   | 库存是否足够去买或者卖               | 是    | 
 
-#### 3.3.1.5、新增玩家道具，用于链数据游戏道具功能
+#### 3.3.1.5、新增玩家道具
 
 ```http
 # 请求
@@ -343,9 +348,9 @@ sequenceDiagram
 
 接口1: - [上传可导出道具元数据http（uploadOrUpdateProp）](HTTP_EN.md) ｜ - [上传可导出道具元数据SDK（uploadOrUpdateProp）](JAVA_SDK_EN.md)
 
-接口2: - [在游戏中删除玩家道具](#3312删除玩家道具用于游戏道具到链数据功能)
+接口2: - [在游戏中删除玩家道具](#3312删除玩家道具)
 
-接口3: - [在游戏中新增玩家道具](#3316新增玩家道具用于链数据游戏道具功能)
+接口3: - [在游戏中新增玩家道具](#3315新增玩家道具)
 
 # 5、NFT变动
 
