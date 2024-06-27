@@ -52,7 +52,7 @@ sequenceDiagram
 
 接口1: - [上传可导出道具元数据http（uploadOrUpdateProp）](HTTP_EN.md) ｜ - [上传可导出道具元数据SDK（uploadOrUpdateProp）](JAVA_SDK_EN.md)
 
-接口2: - [查询玩家可导出数量](#3311查询可以导入导出玩家级别的配置)
+接口2: - [查询玩家可导出数量](#3313查询玩家游戏道具库存)
 
 接口3: - [删除玩家道具](#3312删除玩家道具)
 
