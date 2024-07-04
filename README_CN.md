@@ -302,7 +302,7 @@ POST https://game.com/increaseAsset
 | err  | string | 错误信息，有则不用填                | 否    |
 | data | string | "success" &#124; "fail    | 是    |
 
-#### 3.3.1.6、获取游戏内商品列表
+#### 3.3.1.6、获取游戏周边商品列表(实体纪念品)
 ```http
 # 请求
 GET https://game.com/callback/getMerchandises
@@ -337,7 +337,7 @@ GET https://game.com/callback/getMerchandises
 | data[].image | string | 商品图片URL    | 是    |
 | data[].description | string | 商品描述    | 否 |
 
-#### 3.3.1.7、购买游戏内商品
+#### 3.3.1.7、购买游戏内商品(实体纪念品)
 ```http
 # 请求
 POST https://game.com/callback/buyMerchandise
