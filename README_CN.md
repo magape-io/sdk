@@ -302,6 +302,46 @@ POST https://game.com/increaseAsset
 | err  | string | 错误信息，有则不用填                | 否    |
 | data | string | "success" &#124; "fail    | 是    |
 
+#### 3.3.1.6、获取游戏内商品列表
+```http
+# 请求
+GET https://game.com/callback/getMerchandises
+
+# 返回
+{
+ "code": 200,
+ "err": "",
+ "data": [
+   {
+     "id": 1,
+     "name": "Model-Bayonet",
+     "image": "https://images.unsplash.com/photo-1668279001742-b37ccbaf145d?q=80&w=3269&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+     "price": "1500.00",
+     "description": null,
+     "createdAt": "2024-07-04T05:44:59.589Z",
+     "currency": 1
+   }
+ ]
+}
+
+**request**
+无需参数
+
+**response**
+
+|      | 类型     | 描述                        | 是否必填 |
+|------|--------|---------------------------|------|
+| code | int    | 相应码,200 成功，401 未授权，500 错误 | 是    |
+| err  | string | 错误信息，有则不用填                | 否    |
+| data | array | 商品列表数据    | 是    |
+| data[].id | int | 商品ID    | 是    |
+| data[].name | string | 商品名称    | 是    |
+| data[].image | string | 商品图片URL    | 是    |
+| data[].description | string | 商品描述    | 否 |
+| data[].createAt | string | 商品创建时间    | 是    |
+| data[].updateAt | string | 商品更新时间    | 否    |
+
+
 ####          
 
 ### 3.3.2、magape平台
