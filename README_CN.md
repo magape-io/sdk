@@ -341,6 +341,57 @@ GET https://game.com/callback/getMerchandises
 | data[].createAt | string | 商品创建时间    | 是    |
 | data[].updateAt | string | 商品更新时间    | 否    |
 
+#### 3.3.1.7、购买游戏内商品
+```http
+# 请求
+POST https://game.com/callback/buyMerchandise
+--header 'signature:xxxx'
+--header 'Content-Type: application/json' \
+--data '{
+  "reqId": 23424,
+  "address": "0xA34357486224151dDfDB291E13194995c22Df505",
+  "items": [
+    {
+      "id": 1,
+      "quantity": 2
+    },
+    {
+      "id": 2, 
+      "quantity": 3
+    },
+    {
+      "id": 2,
+      "quantity": 4
+    }
+  ]
+}'
+
+# 返回
+{
+  "code": 200,
+  "err": "",
+  "data": "success"
+}
+```
+
+**request**
+|                   | 类型     | 位置     | 描述                                         | 是否必填 |
+|-------------------|--------|--------|---------------------------------------------|------|
+| reqId             | int    | body   | 请求的唯一ID                                    | 是    |
+| address           | string | body   | 用户钱包地址                                     | 是    |
+| items             | array  | body   | 购买的商品列表                                    | 是    |
+| items[].id        | int    | body   | 商品ID                                       | 是    |
+| items[].quantity  | int    | body   | 购买数量                                       | 是    |
+
+**response**
+|      | 类型     | 描述                           | 是否必填 |
+|------|--------|------------------------------|------|
+| code | int    | 响应码,200 成功,401 未授权,500 错误    | 是    |
+| err  | string | 错误信息,若无错误则为空字符串              | 是    |
+| data | string | 操作结果,"success"表示成功| 是    |
+
+
+
 
 ####          
 
