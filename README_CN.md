@@ -317,9 +317,7 @@ GET https://game.com/callback/getMerchandises
      "name": "Model-Bayonet",
      "image": "https://images.unsplash.com/photo-1668279001742-b37ccbaf145d?q=80&w=3269&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
      "price": "1500.00",
-     "description": null,
-     "createdAt": "2024-07-04T05:44:59.589Z",
-     "currency": 1
+     "description": null
    }
  ]
 }
@@ -338,8 +336,6 @@ GET https://game.com/callback/getMerchandises
 | data[].name | string | 商品名称    | 是    |
 | data[].image | string | 商品图片URL    | 是    |
 | data[].description | string | 商品描述    | 否 |
-| data[].createAt | string | 商品创建时间    | 是    |
-| data[].updateAt | string | 商品更新时间    | 否    |
 
 #### 3.3.1.7、购买游戏内商品
 ```http
