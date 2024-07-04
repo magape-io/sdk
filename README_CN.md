@@ -323,7 +323,7 @@ GET https://game.com/callback/getMerchandises
    }
  ]
 }
-
+```
 **request**
 无需参数
 
