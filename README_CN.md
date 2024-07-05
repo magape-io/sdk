@@ -302,62 +302,24 @@ POST https://game.com/increaseAsset
 | err  | string | 错误信息，有则不用填                | 否    |
 | data | string | "success" &#124; "fail    | 是    |
 
-#### 3.3.1.6、获取游戏周边商品列表(实体纪念品)
-```http
-# 请求
-GET https://game.com/callback/getMerchandises
 
-# 返回
-{
- "code": 200,
- "err": "",
- "data": [
-   {
-     "id": 1,
-     "name": "Model-Bayonet",
-     "image": "https://images.unsplash.com/photo-1668279001742-b37ccbaf145d?q=80&w=3269&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-     "price": "1500.00",
-     "description": null
-   }
- ]
-}
-```
-**request**
-无需参数
-
-**response**
-
-|      | 类型     | 描述                        | 是否必填 |
-|------|--------|---------------------------|------|
-| code | int    | 相应码,200 成功，401 未授权，500 错误 | 是    |
-| err  | string | 错误信息，有则不用填                | 否    |
-| data | array | 商品列表数据    | 是    |
-| data[].id | int | 商品ID    | 是    |
-| data[].name | string | 商品名称    | 是    |
-| data[].image | string | 商品图片URL    | 是    |
-| data[].description | string | 商品描述    | 否 |
-
-#### 3.3.1.7、购买游戏内商品(实体纪念品)
+#### 3.3.1.6、购买游戏内商品(实体纪念品，如果游戏没有周边商品需要贩卖可以不用提供这个接口，这个接口用于用magape平台beans购买游戏周边之后通知游戏厂商)
 ```http
 # 请求
 POST https://game.com/callback/buyMerchandise
 --header 'signature:xxxx'
 --header 'Content-Type: application/json' \
 --data '{
-  "reqId": 23424,
+  "reqId": "1720160554482100200",
   "address": "0xA34357486224151dDfDB291E13194995c22Df505",
   "items": [
     {
-      "id": 1,
-      "quantity": 2
-    },
-    {
-      "id": 2, 
-      "quantity": 3
-    },
-    {
-      "id": 2,
-      "quantity": 4
+      "username": "magape",
+      "id": 43,
+      "telephone": "+61 88888888",
+      "remark": "Hello!",
+      "quantity": 3,
+      "deliveryAddress": "moon"
     }
   ]
 }'
@@ -378,6 +340,10 @@ POST https://game.com/callback/buyMerchandise
 | items             | array  | body   | 购买的商品列表                                    | 是    |
 | items[].id        | int    | body   | 商品ID                                       | 是    |
 | items[].quantity  | int    | body   | 购买数量                                       | 是    |
+| items[].username  | string    | body   | 收件人名称                                       | 是    |
+| items[].telephone  | string    | body   | 收件人号码                                       | 是    |
+| items[].deliveryAddress  | string    | body   | 收件地址                                       | 是    |
+| items[].remark  | string    | body   | 备注                                       | 否    |
 
 **response**
 |      | 类型     | 描述                           | 是否必填 |
