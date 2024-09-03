@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.magape-official</groupId>
+    <groupId>io.github.magape-io</groupId>
     <artifactId>magape-java-sdk</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>magape-java-sdk</name>
@@ -60,6 +60,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.5</version>
+<!--                <version>3.0.1</version>-->
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
@@ -67,6 +68,10 @@
                         <goals>
                             <goal>sign</goal>
                         </goals>
+                        <configuration>
+                            <keyname>353856987FEFE674</keyname>
+                            <passphraseServerId>353856987FEFE674</passphraseServerId>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -132,7 +137,7 @@
 
     <developers>
         <developer>
-            <name>dev</name>
+            <name>magape</name>
             <email>dev@magape.com</email>
             <organization>MagApe</organization>
             <organizationUrl>https://magape.io</organizationUrl>
@@ -140,9 +145,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/magape-official/sdk.git</connection>
-        <developerConnection>scm:git:ssh://github.com/magape-official/sdk.git</developerConnection>
-        <url>http://github.com/magape-official/sdk.git/tree/master</url>
+        <connection>scm:git:git://github.com/magape-io/sdk.git</connection>
+        <developerConnection>scm:git:ssh://github.com/magape-io/sdk.git</developerConnection>
+        <url>http://github.com/magape-io/sdk.git/tree/master</url>
     </scm>
 
 

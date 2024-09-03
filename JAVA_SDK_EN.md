@@ -3,9 +3,9 @@
 ```xml
 
 <dependency>
-    <groupId>io.github.magape-official</groupId>
+    <groupId>io.github.magape-io</groupId>
     <artifactId>magape-java-sdk</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
