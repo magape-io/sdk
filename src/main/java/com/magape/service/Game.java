@@ -3,6 +3,7 @@ package com.magape.service;
 import com.magape.exception.MapApeException;
 import com.magape.model.Response;
 import com.magape.model.domain.GameProp;
+import com.magape.model.req.GameExitReq;
 import com.magape.net.ApiRequest;
 import com.magape.net.ContentType;
 import com.magape.net.RequestMethod;
@@ -19,6 +20,15 @@ public class Game extends BaseApi {
         Response execute = execute(new ApiRequest(RequestMethod.POST, path, ContentType.APPLICATION_JSON,requestId, gameProps), Response.class);
         if (execute.getCode() == 200) {
             return true;
+        }
+        throw new MapApeException(execute.getMessage());
+    }
+
+    public static String exit(String requestId, GameExitReq gameExitReq) throws Exception {
+        String path = "/v1/game/exit";
+        Response execute = execute(new ApiRequest(RequestMethod.POST, path, ContentType.APPLICATION_JSON,requestId,gameExitReq), Response.class);
+        if (execute.getCode() == 200) {
+            return execute.getMessage();
         }
         throw new MapApeException(execute.getMessage());
     }

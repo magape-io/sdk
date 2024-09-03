@@ -706,11 +706,26 @@ curl --location 'https://{url}/api/v1/nft/overallPerformance' \
 | enhancedAttrs[0].name               | int    | 游戏定义属性                    | 是    |
 | enhancedAttrs[0].nfName             | int    | nft 名称                    | 是    |
 
-# 7、登入游戏
+# 7、登入&退出游戏
 
-## 7.1、web游戏通过magape登入
+## 7.1、web游戏集成在magape平台，并通过magape game hall登入
 
 玩家先登入magape平台进行签名，在进入游戏的时候带上magape平台生成的token信息。游戏厂商可以直接使用token操作sdk方法，也可以直接传入玩家地址，区别是token可以让玩家退出游戏，address不存在退出
+
+```mermaid
+sequenceDiagram
+    participant A as 玩家
+    participant B as magape平台
+    participant C as 游戏厂商
+    A ->> B: 登入magape平台
+    Note left of A: 对象A的描述(提示)
+    B -->> A: Fine, Thank you.
+    Note right of B: 对象B的描述
+    A -x B: 我走了
+
+
+```
+
 
 ## 7.2、通过游戏自身的账户体系登入
 
@@ -730,6 +745,46 @@ curl --location 'https://{url}/api/v1/nft/overallPerformance' \
 通过开源钱包或者magape随机生成一个钱包公私钥，并让用户设定好密码。返回认证结果和用户钱包地址
 
 ## 8.2、退出
+```http
+# 请求
+curl --location 'https://{url}/api/v1/game/exit' \
+        --header 'signature: xxxx' \
+        --header 'requestId: 123123127' \
+        --header 'X-Access-Key: xxx' \
+        --header 'Content-Type: application/json' \
+        --data '
+            {
+                "token":"xxxx"
+            }
+'
+
+# 返回
+{
+  "code": 200,
+  "data": {"succcess"},
+  "message": "success"
+}
+```
+
+**request**
+
+|              | 位置     | 描述                 | 是否必填 |
+|--------------|--------|--------------------|------|
+| requestId    | header | 唯一的traceId，不能重复    | Yes  |
+| signature    | header | 签名信息               | Yes  |
+| X-Access-Key | header | magape平台上游戏厂商的访问密钥 | Yes  |
+| GameExitReq  | body   | 请求参数               | Yes  |
+
+|         | 类型     | 描述         | Required |
+|---------|--------|------------|----------|
+| token      | string | 登入游戏的token | yes      |
+
+**response**
+
+|                                     | 类型     | 描述                        | 是否必填 |
+|-------------------------------------|--------|---------------------------|------|
+| code                                | int    | 相应码,200 成功，401 未授权，500 错误 | 是    |
+| data                                 | string | 正常返回success，错误返回对应错误信息    | 否    |
 
 ## 8.3、资产查询
 
