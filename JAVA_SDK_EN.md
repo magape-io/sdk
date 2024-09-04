@@ -5,7 +5,7 @@
 <dependency>
     <groupId>io.github.magape-io</groupId>
     <artifactId>magape-java-sdk</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0.1</version>
 </dependency>
 ```
 
@@ -202,21 +202,21 @@ public void test() throws Exception {
 
 obtain the current user's NFT has an impact on the corresponding game
 
-### 3.2.2、Input parameters
+### 3.3.2、Input parameters
 
 |                        | type   | Descriptions                       | Required |
 |--------------------------| --------|------------------------------------|----------|
 | requestId                |  string | Unique traceId, cannot be repeated | Yes      |
 | NFTOverallPerformanceReq |  object | query condition                    | yes      |
 
-## 3.2.3、NFTOverallPerformanceReq
+## 3.3.3、NFTOverallPerformanceReq
 
 |           | type   | Descriptions                         | Required |
 |-----------|--------|--------------------------------------|----------|
 | networkId | int    | networkId(97 bsc testnet,56 mainnet) | yes      |
 | address   | string | Gamer's address                      | yes      |
 
-### 3.2.4、Return data
+### 3.3.4、Return data
 
 ```json
 {
@@ -233,7 +233,7 @@ obtain the current user's NFT has an impact on the corresponding game
 }
 ```
 
-### 3.2.5、Sample code
+### 3.3.5、Sample code
 
 ```java
 
@@ -244,5 +244,90 @@ public void test() throws Exception {
     MagApe.secretKey = "apply from magape";
     NFTOverallPerformance performance = Wallet.performance(String.valueOf(System.currentTimeMillis()), NFTOverallPerformanceReq.build().address("0x4D11dF920E0E48c7E132e5a9754C7e754Cd6EBFB").networkId(97));
     System.out.println(performance);
+}
+```
+
+## 3.4、verifyToken
+
+### 3.4.1、Features
+
+verify whether the login token to magape is valid
+
+### 3.4.2、Input parameters
+
+|                        | type   | Descriptions                       | Required |
+|--------------------------| --------|------------------------------------|----------|
+| requestId                |  string | Unique traceId, cannot be repeated | Yes      |
+| VerifyTokenReq |  object | query condition                    | yes      |
+
+## 3.4.3、VerifyTokenReq
+
+|         | type   | Descriptions | Required |
+|---------|--------|--------------|----------|
+| token   | string    | login token from magape | yes      |
+
+### 3.4.4、Return data
+
+```json
+{
+  "valid": true, // true: valid, false: invalid
+  "address": "0x4D11dF920E0E48c7E132e5a9754C7exx4Cd6EBFB" // gamer's address
+}
+```
+
+### 3.4.5、Sample code
+
+```java
+
+@Test
+public void test() throws Exception {
+    MagApe.live = false;
+    MagApe.accessKey = "apply from magape";
+    MagApe.secretKey = "apply from magape";
+    VerifyTokenResp verifyTokenResp = Game.verifyToken(String.valueOf(System.currentTimeMillis()), VerifyTokenReq.build().token(token));
+    System.out.println(verifyTokenResp);
+}
+```
+
+## 3.5、exit
+
+### 3.5.1、Features
+
+invalid game token
+
+### 3.5.2、Input parameters
+
+|                        | type   | Descriptions                       | Required |
+|--------------------------| --------|------------------------------------|----------|
+| requestId                |  string | Unique traceId, cannot be repeated | Yes      |
+| GameExitReq |  object | query condition                    | yes      |
+
+## 3.5.3、GameExitReq
+
+|         | type   | Descriptions | Required |
+|---------|--------|--------------|----------|
+| token   | string    | login token from magape | yes      |
+
+### 3.5.4、Return data
+
+```json
+{
+  "code": 200, // true: valid, false: invalid
+  "message": "", // gamer's address
+  "data":"success"
+}
+```
+
+### 3.5.5、Sample code
+
+```java
+
+@Test
+public void test() throws Exception {
+    MagApe.live = false;
+    MagApe.accessKey = "apply from magape";
+    MagApe.secretKey = "apply from magape";
+    String exitResp = Game.exit(String.valueOf(System.currentTimeMillis()), GameExitReq.builder().token(token));
+    System.out.println(exitResp);
 }
 ```

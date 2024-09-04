@@ -2,6 +2,7 @@ package com.wd;
 
 import com.magape.MagApe;
 import com.magape.model.domain.VerifyTokenResp;
+import com.magape.model.req.GameExitReq;
 import com.magape.model.req.VerifyTokenReq;
 import com.magape.service.Game;
 import org.junit.Test;
@@ -20,7 +21,8 @@ public class MapApeTest {
 
         String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIweEEzNDM1NzQ4NjIyNDE1MWREZkRCMjkxRTEzMTk0OTk1YzIyRGY1MDUiLCJkYXRlIjoxNzI1MjUyODg5Mzk1fQ.Rnax0W-A4s8qsuHh5_LrSTo0IJmQjBWB5v0yQue6lrI";
 
-        VerifyTokenResp verifyTokenResp = Game.verifyToken(String.valueOf(System.currentTimeMillis()), VerifyTokenReq.build());
+        VerifyTokenResp verifyTokenResp = Game.verifyToken(String.valueOf(System.currentTimeMillis()), VerifyTokenReq.build().token(token));
+        String exitResp = Game.exit(String.valueOf(System.currentTimeMillis()), GameExitReq.builder().token(token));
         System.out.println(verifyTokenResp.isValid());
 
 //

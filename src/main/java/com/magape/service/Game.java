@@ -29,10 +29,10 @@ public class Game extends BaseApi {
     }
 
     /**
-     * obtain the current user's NFT has an impact on the corresponding game
+     * Verify whether the login token to magape is valid
      * @param requestId unique request id for trace
      * @param req request param
-     * @return Verify whether the login token to magape is valid
+     * @return Verify token result
      * @throws Exception exception
      */
     public static VerifyTokenResp verifyToken(String requestId, VerifyTokenReq req) throws Exception {
