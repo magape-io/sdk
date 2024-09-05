@@ -94,17 +94,17 @@ POST https://game.com/assetConfig
 | header       | signature | header | 请求签名，游戏平台使用私钥解签                       | 是    |
 | Content-Type | string    | header | 请求类型application/json                  | 是    |
 | reqId        | string    | body   | 本次请求的唯一id                             | 是    |
-| operate      | string    | body   | 操作类型，buy表示玩家限制购买游戏资产，sell表示玩家限制卖出游戏资产 | 是    |
+| operate      | string    | body   | 操作描述（buy or sell），buy表示查询玩家在平台可以购买的游戏道具库存数量，查询纬度是游戏厂商(例如有的道具是每个玩家只能购买一次)，sell表示查询玩家可以卖出的游戏道具库存数量，查询纬度是玩家 | 是    |
 
 **response**
 
-|               | 类型     | 描述                        | 是否必填    |
-|---------------|--------|---------------------------|---------|
-| code          | int    | 相应码,200 成功，401 未授权，500 错误 | 是       |
-| err           | string | 错误信息，有则不用填                |
-| data          | array  | 玩家可导出的道具合集                | 是       |
-| data[0].propId    | string | 游戏道具id                    | 是       |
-| data[0].quantity | int    | 玩家最多可以买入                  | 卖出多少个道具 | 是    |
+|               | 类型     | 描述                                | 是否必填   |
+|---------------|--------|-----------------------------------|--------|
+| code          | int    | 相应码,200 成功，401 未授权，500 错误         | 是      |
+| err           | string | 错误信息，有则不用填                        |
+| data          | array  | 玩家可导出的道具合集                        | 是      |
+| data[0].propId    | string | 游戏道具id                            | 是      |
+| data[0].quantity | int    | 玩家最多可以买入或卖出多少个道具(-1表示道具可以无限购买/卖出) | 是    |
 
 #### 3.3.1.2、删除玩家道具
 
@@ -184,14 +184,14 @@ POST https://game.com/queryStorage
 
 **request**
 
-|              | 类型       | 位置     | 描述                                                    | 是否必填 |
-|--------------|----------|--------|-------------------------------------------------------|------|
-| signature    | string   | header | 请求签名，游戏平台使用私钥解签                                       | 是    |
-| Content-Type | string   | header | 请求类型application/json                                  | 是    |
-| reqId        | string   | body   | 本次请求的唯一id                                             | 是    |
-| address      | string   | body   | 玩家地址                                                  | 是    |
-| operate      | string   | body   | 操作描述（buy or sell），buy表示查询可以购买的库存数量，sell表示查询玩家可以卖的库存数量 | 是    |
-| queryIds     | string[] | body   | 游戏道具id                                                | 否    | 要查询的道具ID数组,如果不传则查询所有道具
+|              | 类型       | 位置     | 描述                                                                                                       | 是否必填 |
+|--------------|----------|--------|----------------------------------------------------------------------------------------------------------|------|
+| signature    | string   | header | 请求签名，游戏平台使用私钥解签                                                                                          | 是    |
+| Content-Type | string   | header | 请求类型application/json                                                                                     | 是    |
+| reqId        | string   | body   | 本次请求的唯一id                                                                                                | 是    |
+| address      | string   | body   | 玩家地址                                                                                                     | 是    |
+| operate      | string   | body   | 操作描述（buy or sell），buy表示查询玩家在平台可以购买的游戏道具库存数量，查询纬度是游戏厂商(例如有的道具是每个玩家只能购买一次)，sell表示查询玩家可以卖出的游戏道具库存数量，查询纬度是玩家 | 是    |
+| queryIds     | string[] | body   | 游戏道具id                                                                                                   | 否    | 要查询的道具ID数组,如果不传则查询所有道具
 
 **response**
 
@@ -240,7 +240,7 @@ POST https://game.com/checkEnough
 | Content-Type      | string | header | 请求类型application/json                                  | 是    |
 | reqId             | string | body   | 本次请求的唯一id                                             | 是    |
 | address           | string | body   | 玩家地址                                                  | 是    |
-| operate           | string | body   | 操作描述（buy or sell），buy表示查询可以购买的库存数量，sell表示查询玩家可以卖的库存数量 | 是    |
+| operate           | string | body   | 操作描述（buy or sell），buy表示查询玩家在平台可以购买的游戏道具库存数量，查询纬度是游戏厂商(例如有的道具是每个玩家只能购买一次)，sell表示查询玩家可以卖出的游戏道具库存数量，查询纬度是玩家 | 是    |
 | assets[].propId   | string | body   | 游戏道具id                                                | 是    |
 | assets[].quantity | int    | body   | 要购买的数量                                                | 是    |
 
