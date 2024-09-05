@@ -79,8 +79,8 @@ POST https://game.com/assetConfig
 "code":200,
 "data":[ 
     {
-      "id":"游戏道具id",
-      "value":10
+      "propId":"游戏道具id",
+      "quantity":10
     }
   ],
   "err":"" 
@@ -103,8 +103,8 @@ POST https://game.com/assetConfig
 | code          | int    | 相应码,200 成功，401 未授权，500 错误 | 是       |
 | err           | string | 错误信息，有则不用填                |
 | data          | array  | 玩家可导出的道具合集                | 是       |
-| data[0].id    | string | 游戏道具id                    | 是       |
-| data[0].value | int    | 玩家最多可以买入                  | 卖出多少个道具 | 是    |
+| data[0].propId    | string | 游戏道具id                    | 是       |
+| data[0].quantity | int    | 玩家最多可以买入                  | 卖出多少个道具 | 是    |
 
 #### 3.3.1.2、删除玩家道具
 
