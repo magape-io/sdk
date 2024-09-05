@@ -170,14 +170,12 @@ POST https://game.com/queryStorage
 "code":200,
 "data":[
     {
-        "id": 1,
-        "name": "道具1",
-        "value": 100
+        "propId": 1,
+        "quantity": 100
     },
     {
-        "id": 2,
-        "name": "道具2",
-        "value": 200
+        "propId": 2,
+        "quantity": 200
     }
 ],
 "msg":""
@@ -202,9 +200,8 @@ POST https://game.com/queryStorage
 | code         | int      | 相应码,200 成功，401 未授权，500 错误                | 是    |
 | err          | string   | 错误信息，有则不用填                               | 否    |
 | data         | object[] | 返回对象                                     | 是    |
-| data[].id    | string   | 道具id                                     | 是    |
-| data[].name  | string   | 道具名称                                     | 是    |
-| data[].value | string   | 剩余库存数量(operate为buy)或玩家拥有数量(operate为sell) | 是    |
+| data[].propId    | string   | 道具id                                     | 是    |
+| data[].quantity | string   | 剩余库存数量(operate为buy)或玩家拥有数量(operate为sell) | 是    |
 
 #### 3.3.1.4、检查是否还有库存支持导入
 
